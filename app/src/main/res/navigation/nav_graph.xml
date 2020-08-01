@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.jac.mynote.view.SecondFragment"
+        android:name="com.jac.mynote.view.DetailFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
 
