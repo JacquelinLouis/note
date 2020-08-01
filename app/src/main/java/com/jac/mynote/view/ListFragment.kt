@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.jac.mynote.R
 import com.jac.mynote.viewmodel.MyNoteViewModel
 
@@ -35,7 +38,7 @@ class ListFragment : Fragment() {
         notesRecyclerView = view.findViewById<RecyclerView>(R.id.notes_recycler_view)
         notesRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        view.findViewById<Button>(R.id.button_first).setOnClickListener {
+        view.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
 
