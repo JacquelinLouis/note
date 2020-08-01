@@ -17,7 +17,7 @@ import com.jac.mynote.viewmodel.MyNoteViewModel
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment() {
+class ListFragment : Fragment() {
 
     private val myNoteViewModel: MyNoteViewModel by viewModels()
     private lateinit var notesRecyclerView: RecyclerView
