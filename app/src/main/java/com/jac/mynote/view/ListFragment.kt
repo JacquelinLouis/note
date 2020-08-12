@@ -2,6 +2,7 @@ package com.jac.mynote.view
 
 import android.os.Bundle
 import android.view.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -33,6 +34,10 @@ class ListFragment : Fragment() {
         }
     }
     private lateinit var notesRecyclerView: RecyclerView
+    private lateinit var addFloatingActionButton: FloatingActionButton
+    private lateinit var addNoteFloatingActionButton: FloatingActionButton
+    private lateinit var addPasswordFloatingActionButton: FloatingActionButton
+    private lateinit var addLayout: ConstraintLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,15 +50,24 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        addFloatingActionButton = view.findViewById(R.id.fab_add)
+        addNoteFloatingActionButton = view.findViewById(R.id.fab_note)
+        addPasswordFloatingActionButton = view.findViewById(R.id.fab_lock)
+        addLayout = view.findViewById(R.id.fab_add_layout)
         notesRecyclerView = view.findViewById(R.id.notes_recycler_view)
         notesRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        view.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-        }
+        addFloatingActionButton.setOnClickListener { changeAddButtonsVisibility() }
 
         myNoteViewModel.notes.observe(this, notesObserver)
         myNoteViewModel.position.observe(this, positionObserver)
+    }
+
+    private fun changeAddButtonsVisibility() {
+        when (addLayout.visibility) {
+            View.GONE -> addLayout.visibility = View.VISIBLE
+            else -> addLayout.visibility = View.GONE
+        }
     }
 
     override fun onDestroy() {
