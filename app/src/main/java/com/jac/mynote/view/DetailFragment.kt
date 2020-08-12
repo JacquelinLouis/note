@@ -1,6 +1,8 @@
 package com.jac.mynote.view
 
 import android.os.Bundle
+import android.text.InputType
+import android.text.method.KeyListener
 import android.view.*
 import android.widget.Button
 import androidx.fragment.app.Fragment
@@ -21,6 +23,7 @@ class DetailFragment : Fragment() {
     private lateinit var detailTitleText: TextView
     private lateinit var detailContentText: TextView
     private lateinit var detailSaveButton: Button
+    private lateinit var detailCancelButton: Button
     private val myNoteViewModel: MyNoteViewModel by activityViewModels()
     private val observer: Observer<Int> = Observer {
         if (it == MyNoteViewModel.DEFAULT_POSITION) {
@@ -46,6 +49,9 @@ class DetailFragment : Fragment() {
             myNoteViewModel.position.value = MyNoteViewModel.DEFAULT_POSITION
         }
     }
+    private val cancelButtonOnClickListener = View.OnClickListener {
+        myNoteViewModel.position.value = MyNoteViewModel.DEFAULT_POSITION
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +72,9 @@ class DetailFragment : Fragment() {
         detailTitleText = view.findViewById(R.id.detail_title_text)
         detailContentText = view.findViewById(R.id.detail_content_text)
         detailSaveButton = view.findViewById(R.id.detail_save_button)
+        detailCancelButton = view.findViewById(R.id.detail_cancel_button)
         detailSaveButton.setOnClickListener(saveButtonOnClickListener)
+        detailCancelButton.setOnClickListener(cancelButtonOnClickListener)
 
         myNoteViewModel.position.observe(viewLifecycleOwner, observer)
     }

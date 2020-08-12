@@ -13,4 +13,5 @@
     <string name="detail_title_hints">Title…</string>
     <string name="detail_content_hints">Content…</string>
     <string name="detail_save">Save</string>
+    <string name="detail_cancel">Cancel</string>
 </resources>
