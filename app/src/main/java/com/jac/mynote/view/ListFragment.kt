@@ -3,6 +3,7 @@ package com.jac.mynote.view
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -19,7 +20,7 @@ import com.jac.mynote.viewmodel.MyNoteViewModel
  */
 class ListFragment : Fragment() {
 
-    private val myNoteViewModel: MyNoteViewModel by viewModels()
+    private val myNoteViewModel: MyNoteViewModel by activityViewModels()
     private val notesObserver: Observer<List<Note>> = Observer {
         notesRecyclerView.adapter = NotesAdapter(it, onNoteClickListener)
     }
@@ -49,7 +50,7 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        notesRecyclerView = view.findViewById<RecyclerView>(R.id.notes_recycler_view)
+        notesRecyclerView = view.findViewById(R.id.notes_recycler_view)
         notesRecyclerView.layoutManager = LinearLayoutManager(context)
 
         view.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
