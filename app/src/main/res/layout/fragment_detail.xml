@@ -6,19 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".view.DetailFragment">
 
-    <TextView
-        android:id="@+id/detail_title_text_view"
+    <Button
+        android:id="@+id/detail_save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="@dimen/fab_margin" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/fab_margin"
+        android:text="@string/detail_save" />
 
-    <TextView
-        android:id="@+id/detail_content_text_view"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/detail_title_text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/detail_title_text_view"
-        app:layout_constraintStart_toStartOf="@id/detail_title_text_view" />
+        app:layout_constraintTop_toBottomOf="@id/detail_save_button"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="@dimen/fab_margin"
+        android:autofillHints="@string/detail_title_hints"
+        android:inputType="text"
+        android:labelFor="@id/detail_title_text" />
+
+    <EditText
+        android:id="@+id/detail_content_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/detail_title_text"
+        app:layout_constraintStart_toStartOf="@id/detail_title_text"
+        android:layout_margin="@dimen/fab_margin"
+        android:autofillHints="@string/detail_content_hints"
+        android:inputType="textLongMessage"
+        android:labelFor="@id/detail_content_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
