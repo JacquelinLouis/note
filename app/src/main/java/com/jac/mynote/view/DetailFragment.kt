@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -21,7 +22,7 @@ class DetailFragment : Fragment() {
     private lateinit var detailTitleTextView : TextView
     private lateinit var detailContentTextView : TextView
     private val myNoteViewModel: MyNoteViewModel by activityViewModels()
-    private val observer: Observer<Int> = Observer{
+    private val observer: Observer<Int> = Observer {
         if (it == MyNoteViewModel.DEFAULT_POSITION) {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
         } else {
@@ -31,6 +32,16 @@ class DetailFragment : Fragment() {
                 if (note is SingleContentNote) detailTitleTextView.text = note.content
             }
         }
+    }
+    private val onBackPressedCallback = object:OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            myNoteViewModel.position.value = MyNoteViewModel.DEFAULT_POSITION;
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     override fun onCreateView(
