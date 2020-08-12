@@ -29,7 +29,7 @@ class DetailFragment : Fragment() {
             val note = myNoteViewModel.notes.value?.get(myNoteViewModel.position.value!!)
             if (note != null) {
                 detailTitleTextView.text = note.title
-                if (note is SingleContentNote) detailTitleTextView.text = note.content
+                if (note is SingleContentNote) detailContentTextView.text = note.content
             }
         }
     }
@@ -49,12 +49,10 @@ class DetailFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        activity?.actionBar?.setDisplayHomeAsUpEnabled(true);
         return inflater.inflate(R.layout.fragment_detail, container, false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        activity?.actionBar?.setDisplayHomeAsUpEnabled(true)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -65,15 +63,6 @@ class DetailFragment : Fragment() {
         detailContentTextView = view.findViewById(R.id.detail_content_text_view)
 
         myNoteViewModel.position.observe(viewLifecycleOwner, observer)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                myNoteViewModel.position.value = MyNoteViewModel.DEFAULT_POSITION;true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onDestroy() {
