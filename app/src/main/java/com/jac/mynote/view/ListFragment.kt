@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.jac.mynote.R
 import com.jac.mynote.model.Note
+import com.jac.mynote.model.SingleContentNote
 import com.jac.mynote.viewmodel.MyNoteViewModel
 
 /**
@@ -58,6 +59,9 @@ class ListFragment : Fragment() {
         notesRecyclerView.layoutManager = LinearLayoutManager(context)
 
         addFloatingActionButton.setOnClickListener { changeAddButtonsVisibility() }
+        addNoteFloatingActionButton.setOnClickListener{
+            myNoteViewModel.addNote(SingleContentNote("title", "content"))
+        }
 
         myNoteViewModel.notes.observe(this, notesObserver)
         myNoteViewModel.position.observe(this, positionObserver)

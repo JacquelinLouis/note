@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         myNoteDatabase = MyNoteDatabase.getInstance(applicationContext)
         Thread(Runnable {
             val notes = NotesAdapter.fromModelToView(myNoteDatabase.getNotesDao().getAll())
-            runOnUiThread { myNoteViewModel.notes.value = notes }
+            myNoteViewModel.notes.postValue(ArrayList(notes))
         }).start()
     }
 

@@ -9,6 +9,13 @@ class MyNoteViewModel : ViewModel() {
         const val DEFAULT_POSITION: Int = -1
     }
 
-    var notes : MutableLiveData<List<Note>> = MutableLiveData()
+    var notes : MutableLiveData<ArrayList<Note>> = MutableLiveData()
     var position : MutableLiveData<Int> = MutableLiveData(DEFAULT_POSITION)
+
+    fun addNote(note: Note) {
+        var newNotes = notes.value
+        if (newNotes == null) newNotes = ArrayList()
+        newNotes.add(note)
+        notes.value = newNotes
+    }
 }
