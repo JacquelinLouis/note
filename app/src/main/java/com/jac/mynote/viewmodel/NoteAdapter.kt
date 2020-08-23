@@ -7,8 +7,15 @@ import com.jac.mynote.model.SingleContentNote
 class NoteAdapter {
     companion object {
         fun fromModelToView(modelNote: NoteEntity): Note {
-            when(modelNote.type) {
-                else -> return SingleContentNote(modelNote.title, modelNote.content)
+            return when(modelNote.type) {
+                else -> SingleContentNote(modelNote.uid, modelNote.title, modelNote.content)
+            }
+        }
+
+        fun fromViewToModel(viewNote: Note): NoteEntity {
+            return when(viewNote) {
+                is SingleContentNote -> NoteEntity(viewNote.title, SingleContentNote::class.simpleName.toString() ,viewNote.content)
+                else -> NoteEntity(0, "title", "type","content")
             }
         }
     }

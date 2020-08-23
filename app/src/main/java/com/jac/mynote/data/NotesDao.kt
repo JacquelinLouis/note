@@ -6,10 +6,10 @@ import com.jac.mynote.data.NoteEntity
 @Dao
 interface NotesDao {
     @Query("SELECT * FROM NoteEntity")
-    fun getAll() : List<NoteEntity>
+    fun getAll(): List<NoteEntity>
 
     @Insert
-    fun insertNoteEntities(vararg noteEntities: NoteEntity)
+    fun insertNoteEntities(vararg noteEntity: NoteEntity)
 
     @Update
     fun updateNoteEntity(noteEntity: NoteEntity)

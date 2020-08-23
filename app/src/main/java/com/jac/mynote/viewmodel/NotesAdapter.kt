@@ -12,5 +12,13 @@ class NotesAdapter {
             }
             return viewNotes
         }
+
+        fun fromViewToModel(viewNotes: List<Note>): List<NoteEntity> {
+            val modelNotes: ArrayList<NoteEntity> = ArrayList()
+            for(viewNote in viewNotes) {
+                modelNotes.add(NoteAdapter.fromViewToModel(viewNote))
+            }
+            return modelNotes
+        }
     }
 }
