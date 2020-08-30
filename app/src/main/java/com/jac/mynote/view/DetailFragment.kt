@@ -1,13 +1,13 @@
 package com.jac.mynote.view
 
 import android.os.Bundle
-import android.text.InputType
-import android.text.method.KeyListener
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
-import androidx.fragment.app.Fragment
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -29,28 +29,25 @@ class DetailFragment : Fragment() {
         if (it == MyNoteViewModel.DEFAULT_POSITION) {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
         } else {
-            val note = myNoteViewModel.notes.value?.get(myNoteViewModel.position.value!!)
-            if (note != null) {
-                detailTitleText.text = note.title
-                if (note is SingleContentNote) detailContentText.text = note.content
-            }
+            val note = myNoteViewModel.getNote(it) ?: SingleContentNote("", "")
+            detailTitleText.text = note.title
+            if (note is SingleContentNote) detailContentText.text = note.content
         }
     }
     private val onBackPressedCallback = object:OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            myNoteViewModel.position.value = MyNoteViewModel.DEFAULT_POSITION;
-        }
-    }
-    private val saveButtonOnClickListener = View.OnClickListener {
-        val note = myNoteViewModel.notes.value?.get(myNoteViewModel.position.value!!)
-        if (note != null) {
-            note.title = detailTitleText.text.toString()
-            if (note is SingleContentNote) note.content = detailContentText.text.toString()
             myNoteViewModel.position.value = MyNoteViewModel.DEFAULT_POSITION
         }
     }
-    private val cancelButtonOnClickListener = View.OnClickListener {
+    private val saveButtonOnClickListener = View.OnClickListener {
+        val note = myNoteViewModel.getCurrentNote() ?: SingleContentNote("", "")
+        note.title = detailTitleText.text.toString()
+        if (note is SingleContentNote) note.content = detailContentText.text.toString()
+        myNoteViewModel.addNote(note)
         myNoteViewModel.position.value = MyNoteViewModel.DEFAULT_POSITION
+    }
+    private val cancelButtonOnClickListener = View.OnClickListener {
+        onBackPressedCallback.handleOnBackPressed()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

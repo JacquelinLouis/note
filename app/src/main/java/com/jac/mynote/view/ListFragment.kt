@@ -60,7 +60,7 @@ class ListFragment : Fragment() {
 
         addFloatingActionButton.setOnClickListener { changeAddButtonsVisibility() }
         addNoteFloatingActionButton.setOnClickListener{
-            myNoteViewModel.addNote(SingleContentNote("title", "content"))
+            myNoteViewModel.position.value = MyNoteViewModel.NEW_POSITION
         }
 
         myNoteViewModel.notes.observe(this, notesObserver)
