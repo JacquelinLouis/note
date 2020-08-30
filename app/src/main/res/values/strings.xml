@@ -14,4 +14,8 @@
     <string name="detail_content_hints">Content…</string>
     <string name="detail_save">Save</string>
     <string name="detail_cancel">Cancel</string>
+
+    <string name="menu_list_detail_edit">Edit</string>
+    <string name="menu_list_detail_delete">Delete</string>
+    <string name="menu_list_detail_info">Info</string>
 </resources>

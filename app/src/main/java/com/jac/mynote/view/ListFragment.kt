@@ -2,6 +2,10 @@ package com.jac.mynote.view
 
 import android.os.Bundle
 import android.view.*
+import android.widget.AdapterView
+import android.widget.PopupMenu
+import androidx.annotation.NonNull
+import androidx.annotation.Nullable
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -23,12 +27,27 @@ import com.jac.mynote.viewmodel.MyNoteViewModel
 class ListFragment : Fragment() {
 
     private val myNoteViewModel: MyNoteViewModel by activityViewModels()
-    private val notesObserver: Observer<List<Note>> = Observer {
-        notesRecyclerView.adapter = NotesAdapter(it, onNoteClickListener)
-    }
     private val onNoteClickListener: (Int) -> Unit = {
-        position -> myNoteViewModel.position.value = position
+        position -> myNoteViewModel.setPosition(position)
     }
+    private val onNoteLongClickListener: (Int) -> Boolean = { position ->
+        val popupMenu = PopupMenu(context, view)
+        popupMenu.inflate(R.menu.menu_list_detail)
+        popupMenu.setOnMenuItemClickListener {
+            when(it.itemId) {
+                R.id.menu_list_edit -> { myNoteViewModel.setPosition(position); true }
+                R.id.menu_list_delete -> { myNoteViewModel.deleteNote(position); true }
+                R.id.menu_list_info -> true
+                else -> false
+            }
+        }
+        popupMenu.show()
+        true
+    }
+    private val notesObserver: Observer<List<Note>> = Observer {
+        notesRecyclerView.adapter = NotesAdapter(it, onNoteClickListener, onNoteLongClickListener)
+    }
+
     private val positionObserver: Observer<Int> = Observer {
         if (it != MyNoteViewModel.DEFAULT_POSITION) {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
@@ -60,7 +79,7 @@ class ListFragment : Fragment() {
 
         addFloatingActionButton.setOnClickListener { changeAddButtonsVisibility() }
         addNoteFloatingActionButton.setOnClickListener{
-            myNoteViewModel.position.value = MyNoteViewModel.NEW_POSITION
+            myNoteViewModel.setPosition(MyNoteViewModel.NEW_POSITION)
         }
 
         myNoteViewModel.notes.observe(this, notesObserver)

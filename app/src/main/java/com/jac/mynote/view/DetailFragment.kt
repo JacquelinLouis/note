@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.jac.mynote.R
+import com.jac.mynote.model.Note
 import com.jac.mynote.model.SingleContentNote
 import com.jac.mynote.viewmodel.MyNoteViewModel
 
@@ -36,15 +37,15 @@ class DetailFragment : Fragment() {
     }
     private val onBackPressedCallback = object:OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            myNoteViewModel.position.value = MyNoteViewModel.DEFAULT_POSITION
+            myNoteViewModel.setPosition(MyNoteViewModel.DEFAULT_POSITION)
         }
     }
     private val saveButtonOnClickListener = View.OnClickListener {
         val note = myNoteViewModel.getCurrentNote() ?: SingleContentNote("", "")
         note.title = detailTitleText.text.toString()
         if (note is SingleContentNote) note.content = detailContentText.text.toString()
-        myNoteViewModel.addNote(note)
-        myNoteViewModel.position.value = MyNoteViewModel.DEFAULT_POSITION
+        if (note.id == Note.NEW_INSTANCE_ID) myNoteViewModel.addNote(note)
+        myNoteViewModel.setPosition(MyNoteViewModel.DEFAULT_POSITION)
     }
     private val cancelButtonOnClickListener = View.OnClickListener {
         onBackPressedCallback.handleOnBackPressed()
