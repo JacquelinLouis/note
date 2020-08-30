@@ -15,6 +15,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.room.Room
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.jac.mynote.data.DataManager
 import com.jac.mynote.data.MyNoteDatabase
 import com.jac.mynote.model.Note
 import com.jac.mynote.viewmodel.MyNoteViewModel
@@ -24,28 +25,16 @@ import com.jac.mynote.viewmodel.NotesAdapter
 class MainActivity : AppCompatActivity() {
 
     private lateinit var myNoteDatabase: MyNoteDatabase
+    private lateinit var dataManager: DataManager
     private val myNoteViewModel: MyNoteViewModel by viewModels()
-    private val notesObserver: Observer<ArrayList<Note>> = Observer {
-        Thread(Runnable {
-            for (note in it) {
-                if (note.id == Note.NEW_INSTANCE_ID) {
-                    myNoteDatabase.getNotesDao()
-                        .insertNoteEntities(NoteAdapter.fromViewToModel(note))
-                }
-            }
-        }).start()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
         myNoteDatabase = MyNoteDatabase.getInstance(applicationContext)
-        Thread(Runnable {
-            val notes = NotesAdapter.fromModelToView(myNoteDatabase.getNotesDao().getAll())
-            myNoteViewModel.notes.postValue(ArrayList(notes))
-        }).start()
-        myNoteViewModel.notes.observe(this, notesObserver)
+        dataManager = DataManager(this, myNoteDatabase, myNoteViewModel)
+        dataManager.loadDatabase()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

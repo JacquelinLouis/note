@@ -44,7 +44,10 @@ class DetailFragment : Fragment() {
         val note = myNoteViewModel.getCurrentNote() ?: SingleContentNote("", "")
         note.title = detailTitleText.text.toString()
         if (note is SingleContentNote) note.content = detailContentText.text.toString()
-        if (note.id == Note.NEW_INSTANCE_ID) myNoteViewModel.addNote(note)
+        if (note.id == Note.NEW_INSTANCE_ID)
+            myNoteViewModel.addNote(note)
+        else
+            myNoteViewModel.setCurrentNote(note)
         myNoteViewModel.setPosition(MyNoteViewModel.DEFAULT_POSITION)
     }
     private val cancelButtonOnClickListener = View.OnClickListener {
