@@ -1,23 +1,29 @@
 package com.jac.mynote.viewmodel
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import com.jac.mynote.data.MyNoteDatabase
 import com.jac.mynote.data.NoteEntity
 import com.jac.mynote.model.Note
+import kotlinx.coroutines.launch
 
-class MyNoteViewModel : ViewModel() {
+class MyNoteViewModel(application: Application) : AndroidViewModel(application) {
+
     companion object {
         const val DEFAULT_POSITION: Int = -1
         const val NEW_POSITION: Int = -2
     }
 
-    var notes : MutableLiveData<ArrayList<Note>> = MutableLiveData()
+    private var myNoteDatabase: MyNoteDatabase = MyNoteDatabase.getInstance(application)
+
+    var notes : LiveData<List<Note>>
     var position : MutableLiveData<Int> = MutableLiveData(DEFAULT_POSITION)
 
-    private fun updateNotes() {
-        var newNotes = notes.value
-        if (newNotes == null) newNotes = ArrayList()
-        notes.value = newNotes
+    init {
+        notes = Transformations.map<List<NoteEntity>, List<Note>>(
+            myNoteDatabase.getNotesDao().getAll()) {
+                noteEntities -> NotesAdapter.fromModelToView(noteEntities)
+            }
     }
 
     fun setPosition(position: Int) {
@@ -29,13 +35,8 @@ class MyNoteViewModel : ViewModel() {
     }
 
     fun addNote(note: Note) {
-        if (notes.value == null) {
-            val list = ArrayList<Note>()
-            list.add(note)
-            notes.value = list
-        } else {
-            notes.value?.add(note)
-            updateNotes()
+        viewModelScope.launch {
+            myNoteDatabase.getNotesDao().insertNoteEntities(NoteAdapter.fromViewToModel(note))
         }
     }
 
@@ -44,16 +45,10 @@ class MyNoteViewModel : ViewModel() {
         return notes.value?.get(position)
     }
 
-    fun setCurrentNote(note: Note) {
-        val position = getPosition()
-        if (position == null || notes.value == null) return
-        notes.value?.set(position, note)
-        updateNotes()
-    }
-
-    fun setNotes(notesEntities: List<NoteEntity>) {
-        val notes = NotesAdapter.fromModelToView(notesEntities)
-        this.notes.postValue(ArrayList(notes))
+    fun setNote(note: Note) {
+        viewModelScope.launch {
+            myNoteDatabase.getNotesDao().updateNoteEntity(NoteAdapter.fromViewToModel(note))
+        }
     }
 
     fun getCurrentNote(): Note? {
@@ -62,10 +57,12 @@ class MyNoteViewModel : ViewModel() {
 
     fun deleteNote(position: Int) {
         val note = getNote(position)
-        if (note != null) {
-            note.id = Note.OLD_INSTANCE_ID
-            updateNotes()
-            
+        if (note != null) deleteNote(note)
+    }
+
+    fun deleteNote(note: Note) {
+        viewModelScope.launch {
+            myNoteDatabase.getNotesDao().deleteNoteEntity(NoteAdapter.fromViewToModel(note))
         }
     }
 }

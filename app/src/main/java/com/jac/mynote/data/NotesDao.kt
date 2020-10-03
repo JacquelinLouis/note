@@ -1,19 +1,20 @@
 package com.jac.mynote.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.jac.mynote.data.NoteEntity
 
 @Dao
 interface NotesDao {
     @Query("SELECT * FROM NoteEntity")
-    fun getAll(): List<NoteEntity>
+    fun getAll(): LiveData<List<NoteEntity>>
 
     @Insert
-    fun insertNoteEntities(vararg noteEntity: NoteEntity)
+    suspend fun insertNoteEntities(vararg noteEntity: NoteEntity)
 
     @Update
-    fun updateNoteEntity(noteEntity: NoteEntity)
+    suspend fun updateNoteEntity(noteEntity: NoteEntity)
 
     @Delete
-    fun deleteNoteEntity(noteEntity: NoteEntity)
+    suspend fun deleteNoteEntity(noteEntity: NoteEntity)
 }
