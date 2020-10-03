@@ -32,12 +32,11 @@ class ListFragment : Fragment() {
     }
     private val onNoteLongClickListener: (Int) -> Boolean = { position ->
         val popupMenu = PopupMenu(context, view)
-        popupMenu.inflate(R.menu.menu_list_detail)
+        popupMenu.inflate(R.menu.menu_list_popup)
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId) {
-                R.id.menu_list_edit -> { myNoteViewModel.setPosition(position); true }
-                R.id.menu_list_delete -> { myNoteViewModel.deleteNote(position); true }
-                R.id.menu_list_info -> true
+                R.id.action_info -> true
+                R.id.action_delete -> { myNoteViewModel.deleteNote(position); true }
                 else -> false
             }
         }

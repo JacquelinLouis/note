@@ -1,10 +1,7 @@
 package com.jac.mynote.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
+import android.view.*
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -23,8 +20,6 @@ class DetailFragment : Fragment() {
 
     private lateinit var detailTitleText: TextView
     private lateinit var detailContentText: TextView
-    private lateinit var detailSaveButton: Button
-    private lateinit var detailCancelButton: Button
     private val myNoteViewModel: MyNoteViewModel by activityViewModels()
     private val observer: Observer<Int> = Observer {
         if (it == MyNoteViewModel.DEFAULT_POSITION) {
@@ -40,7 +35,7 @@ class DetailFragment : Fragment() {
             myNoteViewModel.setPosition(MyNoteViewModel.DEFAULT_POSITION)
         }
     }
-    private val saveButtonOnClickListener = View.OnClickListener {
+    private fun save(): Boolean {
         val note = myNoteViewModel.getCurrentNote() ?: SingleContentNote("", "")
         note.title = detailTitleText.text.toString()
         if (note is SingleContentNote) note.content = detailContentText.text.toString()
@@ -49,13 +44,36 @@ class DetailFragment : Fragment() {
         else
             myNoteViewModel.setNote(note)
         myNoteViewModel.setPosition(MyNoteViewModel.DEFAULT_POSITION)
+        return true
     }
-    private val cancelButtonOnClickListener = View.OnClickListener {
+    private fun cancel(): Boolean {
         onBackPressedCallback.handleOnBackPressed()
+        return true
+    }
+    private fun delete(): Boolean {
+        val note = myNoteViewModel.getCurrentNote() ?: return false
+        myNoteViewModel.deleteNote(note)
+        myNoteViewModel.setPosition(MyNoteViewModel.DEFAULT_POSITION)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_save -> save()
+            R.id.action_info -> true
+            R.id.action_cancel -> cancel()
+            R.id.action_delete -> delete()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_detail, menu)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
@@ -72,10 +90,6 @@ class DetailFragment : Fragment() {
 
         detailTitleText = view.findViewById(R.id.detail_title_text)
         detailContentText = view.findViewById(R.id.detail_content_text)
-        detailSaveButton = view.findViewById(R.id.detail_save_button)
-        detailCancelButton = view.findViewById(R.id.detail_cancel_button)
-        detailSaveButton.setOnClickListener(saveButtonOnClickListener)
-        detailCancelButton.setOnClickListener(cancelButtonOnClickListener)
 
         myNoteViewModel.position.observe(viewLifecycleOwner, observer)
     }

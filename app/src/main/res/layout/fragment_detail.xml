@@ -6,29 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".view.DetailFragment">
 
-    <Button
-        android:id="@+id/detail_cancel_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="@dimen/fab_margin"
-        android:text="@string/detail_cancel" />
-
-    <Button
-        android:id="@+id/detail_save_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="@dimen/fab_margin"
-        android:text="@string/detail_save" />
-
     <EditText
         android:id="@+id/detail_title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/detail_save_button"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="@dimen/fab_margin"
         android:autofillHints="@string/detail_title_hints"

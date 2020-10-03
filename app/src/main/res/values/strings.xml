@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">MyNote</string>
+    <string name="action_save">Save</string>
+    <string name="action_info">Info</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_delete">Delete</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -14,8 +18,4 @@
     <string name="detail_content_hints">Content…</string>
     <string name="detail_save">Save</string>
     <string name="detail_cancel">Cancel</string>
-
-    <string name="menu_list_detail_edit">Edit</string>
-    <string name="menu_list_detail_delete">Delete</string>
-    <string name="menu_list_detail_info">Info</string>
 </resources>
