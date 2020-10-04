@@ -32,7 +32,7 @@ class ListFragment : Fragment() {
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId) {
                 R.id.action_info -> true
-                R.id.action_delete -> { myNoteViewModel.deleteNote(position); true }
+                R.id.action_delete -> deleteNote(position)
                 else -> false
             }
         }
@@ -53,6 +53,11 @@ class ListFragment : Fragment() {
     private lateinit var addNoteFloatingActionButton: FloatingActionButton
     private lateinit var addPasswordFloatingActionButton: FloatingActionButton
     private lateinit var addLayout: ConstraintLayout
+
+    private fun deleteNote(position: Int): Boolean {
+        myNoteViewModel.deleteNote(position)
+        return true
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

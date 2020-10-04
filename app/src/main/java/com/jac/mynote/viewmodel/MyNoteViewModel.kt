@@ -62,7 +62,7 @@ class MyNoteViewModel(application: Application) : AndroidViewModel(application) 
 
     fun deleteNote(note: Note) {
         viewModelScope.launch {
-            myNoteDatabase.getNotesDao().deleteNoteEntity(NoteAdapter.fromViewToModel(note))
+            myNoteDatabase.getNotesDao().deleteNoteEntity(note.id)
         }
     }
 }
