@@ -14,19 +14,18 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="@dimen/fab_margin"
         android:autofillHints="@string/detail_title_hints"
-        android:inputType="text"
-        android:labelFor="@id/detail_title_text" />
+        android:hint="@string/detail_title_hints"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/detail_content_text"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/detail_title_text"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/detail_title_text"
         android:layout_margin="@dimen/fab_margin"
         android:autofillHints="@string/detail_content_hints"
-        android:inputType="textMultiLine"
-        android:labelFor="@id/detail_content_text" />
+        android:hint="@string/detail_content_hints"
+        android:inputType="textMultiLine" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
