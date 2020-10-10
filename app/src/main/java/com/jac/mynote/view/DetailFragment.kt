@@ -10,7 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.jac.mynote.R
 import com.jac.mynote.model.Note
+import com.jac.mynote.model.PasswordContentNote
 import com.jac.mynote.model.SingleContentNote
+import com.jac.mynote.model.TextContentNote
 import com.jac.mynote.viewmodel.MyNoteViewModel
 
 /**
@@ -36,9 +38,18 @@ class DetailFragment : Fragment() {
         }
     }
     private fun save(): Boolean {
-        val note = myNoteViewModel.getCurrentNote() ?: SingleContentNote("", "")
+        var note = myNoteViewModel.getCurrentNote()
+        if (note == null) {
+            when (myNoteViewModel.getType()) {
+                MyNoteViewModel.TEXT_TYPE -> { note = TextContentNote(Note.NEW_INSTANCE_ID, "", "") }
+                MyNoteViewModel.PASSWORD_TYPE -> { note = PasswordContentNote(Note.NEW_INSTANCE_ID, "", "") }
+            }
+        }
+
         note.title = detailTitleText.text.toString()
+
         if (note is SingleContentNote) note.content = detailContentText.text.toString()
+
         if (note.id == Note.NEW_INSTANCE_ID)
             myNoteViewModel.addNote(note)
         else

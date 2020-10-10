@@ -12,12 +12,16 @@ class MyNoteViewModel(application: Application) : AndroidViewModel(application) 
     companion object {
         const val DEFAULT_POSITION: Int = -1
         const val NEW_POSITION: Int = -2
+
+        const val TEXT_TYPE: Int = 0
+        const val PASSWORD_TYPE: Int = 1
     }
 
     private var myNoteDatabase: MyNoteDatabase = MyNoteDatabase.getInstance(application)
 
     var notes : LiveData<List<Note>>
     var position : MutableLiveData<Int> = MutableLiveData(DEFAULT_POSITION)
+    var type : MutableLiveData<Int> = MutableLiveData(TEXT_TYPE)
 
     init {
         notes = Transformations.map<List<NoteEntity>, List<Note>>(
@@ -32,6 +36,14 @@ class MyNoteViewModel(application: Application) : AndroidViewModel(application) 
 
     fun getPosition(): Int? {
         return this.position.value
+    }
+
+    fun setType(type: Int) {
+        this.type.value = type
+    }
+
+    fun getType(): Int? {
+        return this.type.value
     }
 
     fun addNote(note: Note) {
