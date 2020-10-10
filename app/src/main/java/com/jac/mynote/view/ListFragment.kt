@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.jac.mynote.R
 import com.jac.mynote.model.Note
+import com.jac.mynote.model.PasswordContentNote
+import com.jac.mynote.model.TextContentNote
 import com.jac.mynote.viewmodel.MyNoteViewModel
 
 /**
@@ -24,7 +26,7 @@ class ListFragment : Fragment() {
 
     private val myNoteViewModel: MyNoteViewModel by activityViewModels()
     private val onNoteClickListener: (Int) -> Unit = {
-        position -> myNoteViewModel.setPosition(position)
+        position -> myNoteViewModel.setCurrentNote(position)
     }
     private val onNoteLongClickListener: (Int) -> Boolean = { position ->
         val popupMenu = PopupMenu(context, view)
@@ -43,8 +45,8 @@ class ListFragment : Fragment() {
         notesRecyclerView.adapter = NotesAdapter(it, onNoteClickListener, onNoteLongClickListener)
     }
 
-    private val positionObserver: Observer<Int> = Observer {
-        if (it != MyNoteViewModel.DEFAULT_POSITION) {
+    private val positionObserver: Observer<Note?> = Observer {
+        if (it != null) {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
     }
@@ -78,12 +80,15 @@ class ListFragment : Fragment() {
         notesRecyclerView.layoutManager = LinearLayoutManager(context)
 
         addFloatingActionButton.setOnClickListener { changeAddButtonsVisibility() }
-        addNoteFloatingActionButton.setOnClickListener{
-            myNoteViewModel.setPosition(MyNoteViewModel.NEW_POSITION)
+        addNoteFloatingActionButton.setOnClickListener {
+            myNoteViewModel.setCurrentNote(TextContentNote())
+        }
+        addPasswordFloatingActionButton.setOnClickListener {
+            myNoteViewModel.setCurrentNote(PasswordContentNote())
         }
 
         myNoteViewModel.notes.observe(this, notesObserver)
-        myNoteViewModel.position.observe(this, positionObserver)
+        myNoteViewModel.currentNote.observe(this, positionObserver)
     }
 
     private fun changeAddButtonsVisibility() {
@@ -95,7 +100,7 @@ class ListFragment : Fragment() {
 
     override fun onDestroy() {
         myNoteViewModel.notes.removeObserver(notesObserver)
-        myNoteViewModel.position.removeObserver(positionObserver)
+        myNoteViewModel.currentNote.removeObserver(positionObserver)
         super.onDestroy()
     }
 }

@@ -7,7 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.jac.mynote.R
 import com.jac.mynote.model.Note
-import com.jac.mynote.model.SingleContentNote
+import com.jac.mynote.model.PasswordContentNote
+import com.jac.mynote.model.TextContentNote
 
 class NotesAdapter(private val notes: List<Note>,
                    private val clickListener: (position: Int) -> Unit,
@@ -22,7 +23,10 @@ class NotesAdapter(private val notes: List<Note>,
                       onLongClickListener: (position: Int) -> Boolean) {
             val note : Note = notes[position]
             titleTextView.text = note.title
-            if (note is SingleContentNote) contentView.text = note.content
+            when(note) {
+                is TextContentNote -> contentView.text = note.content
+                is PasswordContentNote -> contentView.text = "******"
+            }
             itemView.setOnClickListener{ clickListener(position) }
             itemView.setOnLongClickListener{ onLongClickListener(position) }
         }

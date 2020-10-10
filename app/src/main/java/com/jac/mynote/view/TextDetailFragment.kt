@@ -11,50 +11,50 @@ import androidx.navigation.fragment.findNavController
 import com.jac.mynote.R
 import com.jac.mynote.model.Note
 import com.jac.mynote.model.PasswordContentNote
-import com.jac.mynote.model.SingleContentNote
 import com.jac.mynote.model.TextContentNote
 import com.jac.mynote.viewmodel.MyNoteViewModel
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class DetailFragment : Fragment() {
+class TextDetailFragment : Fragment() {
 
     private lateinit var detailTitleText: TextView
+
     private lateinit var detailContentText: TextView
+
     private val myNoteViewModel: MyNoteViewModel by activityViewModels()
-    private val observer: Observer<Int> = Observer {
-        if (it == MyNoteViewModel.DEFAULT_POSITION) {
+
+    private val observer: Observer<Note?> = Observer {
+        if (it == null) {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
         } else {
-            val note = myNoteViewModel.getNote(it) ?: SingleContentNote("", "")
-            detailTitleText.text = note.title
-            if (note is SingleContentNote) detailContentText.text = note.content
-        }
-    }
-    private val onBackPressedCallback = object:OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            myNoteViewModel.setPosition(MyNoteViewModel.DEFAULT_POSITION)
-        }
-    }
-    private fun save(): Boolean {
-        var note = myNoteViewModel.getCurrentNote()
-        if (note == null) {
-            when (myNoteViewModel.getType()) {
-                MyNoteViewModel.TEXT_TYPE -> { note = TextContentNote(Note.NEW_INSTANCE_ID, "", "") }
-                MyNoteViewModel.PASSWORD_TYPE -> { note = PasswordContentNote(Note.NEW_INSTANCE_ID, "", "") }
+            detailTitleText.text = it.title
+            when (it) {
+                is TextContentNote -> detailContentText.text = it.content
+                is PasswordContentNote -> detailContentText . text = it.content
             }
         }
+    }
+
+    private val onBackPressedCallback = object:OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            myNoteViewModel.currentNote.value = null
+        }
+    }
+
+    private fun save(): Boolean {
+        val note: Note = myNoteViewModel.getCurrentNote() ?: return false
 
         note.title = detailTitleText.text.toString()
 
-        if (note is SingleContentNote) note.content = detailContentText.text.toString()
+        when (note) {
+            is TextContentNote -> note.content = detailContentText.text.toString()
+            is PasswordContentNote -> note.content = detailContentText.text.toString()
+        }
 
-        if (note.id == Note.NEW_INSTANCE_ID)
-            myNoteViewModel.addNote(note)
-        else
-            myNoteViewModel.setNote(note)
-        myNoteViewModel.setPosition(MyNoteViewModel.DEFAULT_POSITION)
+        myNoteViewModel.setNote(note)
+        myNoteViewModel.setCurrentNote(null)
         return true
     }
     private fun cancel(): Boolean {
@@ -64,7 +64,7 @@ class DetailFragment : Fragment() {
     private fun delete(): Boolean {
         val note = myNoteViewModel.getCurrentNote() ?: return false
         myNoteViewModel.deleteNote(note)
-        myNoteViewModel.setPosition(MyNoteViewModel.DEFAULT_POSITION)
+        myNoteViewModel.setCurrentNote(null)
         return true
     }
 
@@ -102,11 +102,11 @@ class DetailFragment : Fragment() {
         detailTitleText = view.findViewById(R.id.detail_title_text)
         detailContentText = view.findViewById(R.id.detail_content_text)
 
-        myNoteViewModel.position.observe(viewLifecycleOwner, observer)
+        myNoteViewModel.currentNote.observe(viewLifecycleOwner, observer)
     }
 
     override fun onDestroy() {
-        myNoteViewModel.position.removeObserver(observer)
+        myNoteViewModel.currentNote.removeObserver(observer)
         super.onDestroy()
     }
 
