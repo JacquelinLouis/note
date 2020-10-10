@@ -4,17 +4,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.jac.mynote.data.MyNoteDatabase
 
+/** Application entry point, activity started on application start. */
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var myNoteDatabase: MyNoteDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
-        myNoteDatabase = MyNoteDatabase.getInstance(applicationContext)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
