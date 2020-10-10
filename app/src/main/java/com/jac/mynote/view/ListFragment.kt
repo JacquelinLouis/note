@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -29,7 +30,7 @@ class ListFragment : Fragment() {
         position -> myNoteViewModel.setCurrentNote(position)
     }
     private val onNoteLongClickListener: (Int) -> Boolean = { position ->
-        val popupMenu = PopupMenu(context, view)
+        val popupMenu = PopupMenu(context, notesRecyclerView[position])
         popupMenu.inflate(R.menu.menu_list_popup)
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId) {
