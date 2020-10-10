@@ -25,7 +25,7 @@ class TextDetailFragment : Fragment() {
 
     private val myNoteViewModel: MyNoteViewModel by activityViewModels()
 
-    private val observer: Observer<Note?> = Observer {
+    private val currentNoteObserver: Observer<Note?> = Observer {
         if (it == null) {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
         } else {
@@ -102,11 +102,11 @@ class TextDetailFragment : Fragment() {
         detailTitleText = view.findViewById(R.id.detail_title_text)
         detailContentText = view.findViewById(R.id.detail_content_text)
 
-        myNoteViewModel.currentNote.observe(viewLifecycleOwner, observer)
+        myNoteViewModel.currentNote.observe(viewLifecycleOwner, currentNoteObserver)
     }
 
     override fun onDestroy() {
-        myNoteViewModel.currentNote.removeObserver(observer)
+        myNoteViewModel.currentNote.removeObserver(currentNoteObserver)
         super.onDestroy()
     }
 

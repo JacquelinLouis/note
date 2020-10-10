@@ -45,7 +45,7 @@ class ListFragment : Fragment() {
         notesRecyclerView.adapter = NotesAdapter(it, onNoteClickListener, onNoteLongClickListener)
     }
 
-    private val positionObserver: Observer<Note?> = Observer {
+    private val currentNoteObserver: Observer<Note?> = Observer {
         if (it != null) {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
@@ -88,7 +88,7 @@ class ListFragment : Fragment() {
         }
 
         myNoteViewModel.notes.observe(this, notesObserver)
-        myNoteViewModel.currentNote.observe(this, positionObserver)
+        myNoteViewModel.currentNote.observe(this, currentNoteObserver)
     }
 
     private fun changeAddButtonsVisibility() {
@@ -100,7 +100,7 @@ class ListFragment : Fragment() {
 
     override fun onDestroy() {
         myNoteViewModel.notes.removeObserver(notesObserver)
-        myNoteViewModel.currentNote.removeObserver(positionObserver)
+        myNoteViewModel.currentNote.removeObserver(currentNoteObserver)
         super.onDestroy()
     }
 }
