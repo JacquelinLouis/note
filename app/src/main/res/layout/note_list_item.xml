@@ -16,6 +16,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:textStyle="bold"
+        android:ellipsize="end"
+        android:maxLines="1"
         tools:text="title"/>
 
     <TextView
@@ -24,6 +26,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/note_list_item_title"
+        android:ellipsize="end"
+        android:maxLines="1"
         tools:text="content"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
