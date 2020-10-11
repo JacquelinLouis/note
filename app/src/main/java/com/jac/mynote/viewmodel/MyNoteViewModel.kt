@@ -7,13 +7,19 @@ import com.jac.mynote.data.NoteEntity
 import com.jac.mynote.model.Note
 import kotlinx.coroutines.launch
 
+/** View-model entry point, store view-related data and update database accordingly. */
 class MyNoteViewModel(application: Application) : AndroidViewModel(application) {
 
+    /** Database storing application's data. */
     private var myNoteDatabase: MyNoteDatabase = MyNoteDatabase.getInstance(application)
 
+    /** Live data of items list view. */
     var notes : LiveData<List<Note>>
+
+    /** Live data of current note (creation or update). */
     var currentNote : MutableLiveData<Note?> = MutableLiveData()
 
+    /** Class initialization with constructor parameters. */
     init {
         notes = Transformations.map<List<NoteEntity>, List<Note>>(
             myNoteDatabase.getNotesDao().getAll()) {
@@ -21,17 +27,32 @@ class MyNoteViewModel(application: Application) : AndroidViewModel(application) 
             }
     }
 
+    /**
+     * Save the new note in the database.
+     *
+     * @param note the view note to convert to model and insert in the database.
+     */
     fun addNote(note: Note) {
         viewModelScope.launch {
             myNoteDatabase.getNotesDao().insertNoteEntities(NoteAdapter.fromViewToModel(note))
         }
     }
 
+    /**
+     * Get the note from notes live data/database list.
+     * @param position the position to get data at in notes list.
+     */
     fun getNote(position: Int): Note? {
         if (position < 0 || notes.value?.size ?: 0 <= position) return null
         return notes.value?.get(position)
     }
 
+    /**
+     * Update or create the given view note in model notes list, depending on it identifier.
+     * @param note the note to create or update.
+     * If the note identifier is {@link Note.NEW_INSTANCE_ID}, the note will be created, else it
+     * will replace the one with the same identifier (if exist).
+     */
     fun setNote(note: Note) {
         when (note.id) {
             Note.NEW_INSTANCE_ID -> addNote(note)
@@ -41,26 +62,47 @@ class MyNoteViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    /**
+     * Delete the note at the given position in notes list.
+     * @param position the position, in the list, of the note to delete.
+     */
     fun deleteNote(position: Int) {
         val note = getNote(position)
         if (note != null) deleteNote(note)
     }
 
+    /**
+     * Delete the given note in the list.
+     * @param note the note to delete, identified by its identifier.
+     */
     fun deleteNote(note: Note) {
         viewModelScope.launch {
             myNoteDatabase.getNotesDao().deleteNoteEntity(note.id)
         }
     }
 
-
+    /**
+     * Get the current note (creation or update) if exist.
+     * @return the current note if exist. Else return null.
+     */
     fun getCurrentNote(): Note? {
         return currentNote.value
     }
 
+    /**
+     * Set the current note (creation for a note with {@link Note.NEW_INSTANCE_ID} identifier,
+     * update for an other).
+     * @param note  the note to set as current. Can be null.
+     */
     fun setCurrentNote(note: Note?) {
         currentNote.value = note
     }
 
+    /**
+     * Set the current note with existing one in the list.
+     * @param position the position of the note, in the list, to set as current one.
+     * If the position is invalid, null will be set as current note.
+     */
     fun setCurrentNote(position: Int) {
         currentNote.value = getNote(position)
     }
