@@ -48,7 +48,7 @@ class ListFragment : Fragment() {
 
     private val currentNoteObserver: Observer<Note?> = Observer {
         if (it != null) {
-            findNavController().navigate(R.id.action_ListFragment_to_SecondFragment)
+            findNavController().navigate(R.id.action_ListFragment_to_TextDetailFragment)
         }
     }
     private lateinit var notesRecyclerView: RecyclerView

@@ -12,17 +12,17 @@
         tools:layout="@layout/fragment_list">
 
         <action
-            android:id="@+id/action_ListFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_ListFragment_to_TextDetailFragment"
+            app:destination="@id/TextDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
+        android:id="@+id/TextDetailFragment"
         android:name="com.jac.mynote.view.TextDetailFragment"
-        android:label="@string/second_fragment_label"
+        android:label="@string/text_detail_fragment_label"
         tools:layout="@layout/fragment_detail">
 
         <action
-            android:id="@+id/action_SecondFragment_to_ListFragment"
+            android:id="@+id/action_TextDetailFragment_to_ListFragment"
             app:destination="@id/ListFragment" />
     </fragment>
 </navigation>
