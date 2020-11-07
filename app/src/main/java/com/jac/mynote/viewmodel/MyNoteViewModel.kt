@@ -1,11 +1,17 @@
 package com.jac.mynote.viewmodel
 
 import android.app.Application
+import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.*
 import com.jac.mynote.data.MyNoteDatabase
 import com.jac.mynote.data.NoteEntity
+import com.jac.mynote.json.Notes
 import com.jac.mynote.model.Note
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 /** View-model entry point, store view-related data and update database accordingly. */
 class MyNoteViewModel(application: Application) : AndroidViewModel(application) {
@@ -82,6 +88,13 @@ class MyNoteViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     /**
+     * Delete all notes.
+     */
+    fun deleteNotes() {
+        viewModelScope.launch { myNoteDatabase.getNotesDao().deleteNoteEntities() }
+    }
+
+    /**
      * Get the current note (creation or update) if exist.
      * @return the current note if exist. Else return null.
      */
@@ -105,5 +118,37 @@ class MyNoteViewModel(application: Application) : AndroidViewModel(application) 
      */
     fun setCurrentNote(position: Int) {
         currentNote.value = getNote(position)
+    }
+
+    /**
+     * Export database to the given directory.
+     * @param context the Android context to get contentResolver from.
+     * @param uri the uri to export data to.
+     */
+    fun export(context: Context, uri: Uri) {
+        val notes = notes.value
+        if (notes != null) {
+            val parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, "w")
+            val fileDescriptor = parcelFileDescriptor?.fileDescriptor
+            val fileOutputStream = FileOutputStream(fileDescriptor)
+            Notes.serialize(NotesAdapter.fromViewToModel(notes), fileOutputStream)
+            fileOutputStream.close()
+        }
+    }
+
+    /**
+     * Import database from the given file.
+     * @param context the Android context to get contentResolver from.
+     * @param uri the uri to export data to.
+     */
+    fun import(context: Context, uri: Uri) {
+        val parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, "r")
+        val fileDescriptor = parcelFileDescriptor?.fileDescriptor
+        val fileInputStream = FileInputStream(fileDescriptor)
+        val noteEntities = Notes.deserialize(fileInputStream)
+        viewModelScope.launch {
+            noteEntities.forEach{ myNoteDatabase.getNotesDao().insertNoteEntities(it) }
+        }
+        fileInputStream.close()
     }
 }

@@ -47,5 +47,8 @@ interface NotesDao {
      * @param id the {@link NoteEntity} to delete identifier.
      */
     @Query("DELETE FROM NoteEntity WHERE uid = :id")
-    suspend fun deleteNoteEntity(id: Int);
+    suspend fun deleteNoteEntity(id: Int)
+
+    @Query("DELETE FROM NoteEntity")
+    suspend fun deleteNoteEntities()
 }
