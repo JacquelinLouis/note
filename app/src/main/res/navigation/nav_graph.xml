@@ -5,6 +5,7 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/ListFragment">
 
+    <!-- List fragment, launched on application start. -->
     <fragment
         android:id="@+id/ListFragment"
         android:name="com.jac.mynote.view.ListFragment"
@@ -15,6 +16,8 @@
             android:id="@+id/action_ListFragment_to_TextDetailFragment"
             app:destination="@id/TextDetailFragment" />
     </fragment>
+
+    <!-- Text detail fragment, launched when an item is selected/created in list. -->
     <fragment
         android:id="@+id/TextDetailFragment"
         android:name="com.jac.mynote.view.TextDetailFragment"
