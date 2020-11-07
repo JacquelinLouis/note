@@ -25,18 +25,6 @@ class TextDetailFragment : Fragment() {
 
     private val myNoteViewModel: MyNoteViewModel by activityViewModels()
 
-    private val currentNoteObserver: Observer<Note?> = Observer {
-        if (it == null) {
-            findNavController().navigate(R.id.action_TextDetailFragment_to_ListFragment)
-        } else {
-            detailTitleText.text = it.title
-            when (it) {
-                is TextContentNote -> detailContentText.text = it.content
-                is PasswordContentNote -> detailContentText . text = it.content
-            }
-        }
-    }
-
     private val onBackPressedCallback = object:OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             myNoteViewModel.currentNote.value = null
@@ -102,11 +90,20 @@ class TextDetailFragment : Fragment() {
         detailTitleText = view.findViewById(R.id.detail_title_text)
         detailContentText = view.findViewById(R.id.detail_content_text)
 
-        myNoteViewModel.currentNote.observe(viewLifecycleOwner, currentNoteObserver)
+        myNoteViewModel.currentNote.observe(viewLifecycleOwner, Observer {
+            if (it == null) {
+                findNavController().navigate(R.id.action_TextDetailFragment_to_ListFragment)
+            } else {
+                detailTitleText.text = it.title
+                when (it) {
+                    is TextContentNote -> detailContentText.text = it.content
+                    is PasswordContentNote -> detailContentText . text = it.content
+                }
+            }
+        })
     }
 
     override fun onDestroy() {
-        myNoteViewModel.currentNote.removeObserver(currentNoteObserver)
         super.onDestroy()
     }
 
