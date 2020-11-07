@@ -15,6 +15,11 @@
         <action
             android:id="@+id/action_ListFragment_to_TextDetailFragment"
             app:destination="@id/TextDetailFragment" />
+
+        <action
+            android:id="@+id/action_ListFragment_to_SettingsFragment"
+            app:destination="@id/SettingsFragment" />
+
     </fragment>
 
     <!-- Text detail fragment, launched when an item is selected/created in list. -->
@@ -27,5 +32,16 @@
         <action
             android:id="@+id/action_TextDetailFragment_to_ListFragment"
             app:destination="@id/ListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="com.jac.mynote.view.SettingsFragment"
+        android:label="@string/settings_fragment_label">
+
+        <action
+            android:id="@+id/action_SettingsFrament_to_ListFragment"
+            app:destination="@+id/ListFragment" />
+
     </fragment>
 </navigation>

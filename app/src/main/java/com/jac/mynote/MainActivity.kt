@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.jac.mynote.view.ListFragment
 
 /** Application entry point, activity started on application start. */
 class MainActivity : AppCompatActivity() {
@@ -25,7 +28,10 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                findNavController(R.id.nav_host_fragment).navigate(R.id.action_ListFragment_to_SettingsFragment)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

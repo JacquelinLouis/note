@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.jac.mynote.R
-import com.jac.mynote.model.Note
 import com.jac.mynote.model.PasswordContentNote
 import com.jac.mynote.model.TextContentNote
 import com.jac.mynote.viewmodel.MyNoteViewModel
@@ -42,15 +41,7 @@ class ListFragment : Fragment() {
         popupMenu.show()
         true
     }
-    private val notesObserver: Observer<List<Note>> = Observer {
-        notesRecyclerView.adapter = NotesAdapter(it, onNoteClickListener, onNoteLongClickListener)
-    }
 
-    private val currentNoteObserver: Observer<Note?> = Observer {
-        if (it != null) {
-            findNavController().navigate(R.id.action_ListFragment_to_TextDetailFragment)
-        }
-    }
     private lateinit var notesRecyclerView: RecyclerView
     private lateinit var addFloatingActionButton: FloatingActionButton
     private lateinit var addNoteFloatingActionButton: FloatingActionButton
@@ -88,8 +79,14 @@ class ListFragment : Fragment() {
             myNoteViewModel.setCurrentNote(PasswordContentNote())
         }
 
-        myNoteViewModel.notes.observe(this, notesObserver)
-        myNoteViewModel.currentNote.observe(this, currentNoteObserver)
+        myNoteViewModel.notes.observe(this, Observer {
+            notesRecyclerView.adapter = NotesAdapter(it, onNoteClickListener, onNoteLongClickListener)
+        })
+        myNoteViewModel.currentNote.observe(this, Observer {
+            if (it != null) {
+                findNavController().navigate(R.id.action_ListFragment_to_TextDetailFragment)
+            }
+        })
     }
 
     private fun changeAddButtonsVisibility() {
@@ -97,11 +94,5 @@ class ListFragment : Fragment() {
             View.GONE -> addLayout.visibility = View.VISIBLE
             else -> addLayout.visibility = View.GONE
         }
-    }
-
-    override fun onDestroy() {
-        myNoteViewModel.notes.removeObserver(notesObserver)
-        myNoteViewModel.currentNote.removeObserver(currentNoteObserver)
-        super.onDestroy()
     }
 }
