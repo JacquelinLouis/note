@@ -27,7 +27,7 @@ class TextDetailFragment : Fragment() {
 
     private val currentNoteObserver: Observer<Note?> = Observer {
         if (it == null) {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+            findNavController().navigate(R.id.action_SecondFragment_to_ListFragment)
         } else {
             detailTitleText.text = it.title
             when (it) {
