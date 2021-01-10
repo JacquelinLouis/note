@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -15,8 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.jac.mynote.R
-import com.jac.mynote.model.PasswordContentNote
-import com.jac.mynote.model.TextContentNote
+import com.jac.mynote.model.Note
 import com.jac.mynote.viewmodel.MyNoteViewModel
 
 /**
@@ -44,9 +42,6 @@ class ListFragment : Fragment() {
 
     private lateinit var notesRecyclerView: RecyclerView
     private lateinit var addFloatingActionButton: FloatingActionButton
-    private lateinit var addNoteFloatingActionButton: FloatingActionButton
-    private lateinit var addPasswordFloatingActionButton: FloatingActionButton
-    private lateinit var addLayout: ConstraintLayout
 
     private fun deleteNote(position: Int): Boolean {
         myNoteViewModel.deleteNote(position)
@@ -65,18 +60,11 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         addFloatingActionButton = view.findViewById(R.id.fab_add)
-        addNoteFloatingActionButton = view.findViewById(R.id.fab_note)
-        addPasswordFloatingActionButton = view.findViewById(R.id.fab_lock)
-        addLayout = view.findViewById(R.id.fab_add_layout)
         notesRecyclerView = view.findViewById(R.id.notes_recycler_view)
         notesRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        addFloatingActionButton.setOnClickListener { changeAddButtonsVisibility() }
-        addNoteFloatingActionButton.setOnClickListener {
-            myNoteViewModel.setCurrentNote(TextContentNote())
-        }
-        addPasswordFloatingActionButton.setOnClickListener {
-            myNoteViewModel.setCurrentNote(PasswordContentNote())
+        addFloatingActionButton.setOnClickListener {
+            myNoteViewModel.setCurrentNote(Note())
         }
 
         myNoteViewModel.notes.observe(this, Observer {
@@ -87,12 +75,5 @@ class ListFragment : Fragment() {
                 findNavController().navigate(R.id.action_ListFragment_to_TextDetailFragment)
             }
         })
-    }
-
-    private fun changeAddButtonsVisibility() {
-        when (addLayout.visibility) {
-            View.GONE -> addLayout.visibility = View.VISIBLE
-            else -> addLayout.visibility = View.GONE
-        }
     }
 }

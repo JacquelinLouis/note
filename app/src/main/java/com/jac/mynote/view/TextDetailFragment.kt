@@ -10,8 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.jac.mynote.R
 import com.jac.mynote.model.Note
-import com.jac.mynote.model.PasswordContentNote
-import com.jac.mynote.model.TextContentNote
 import com.jac.mynote.viewmodel.MyNoteViewModel
 
 /**
@@ -35,11 +33,7 @@ class TextDetailFragment : Fragment() {
         val note: Note = myNoteViewModel.getCurrentNote() ?: return false
 
         note.title = detailTitleText.text.toString()
-
-        when (note) {
-            is TextContentNote -> note.content = detailContentText.text.toString()
-            is PasswordContentNote -> note.content = detailContentText.text.toString()
-        }
+        note.content = detailContentText.text.toString()
 
         myNoteViewModel.setNote(note)
         myNoteViewModel.setCurrentNote(null)
@@ -95,16 +89,8 @@ class TextDetailFragment : Fragment() {
                 findNavController().navigate(R.id.action_TextDetailFragment_to_ListFragment)
             } else {
                 detailTitleText.text = it.title
-                when (it) {
-                    is TextContentNote -> detailContentText.text = it.content
-                    is PasswordContentNote -> detailContentText . text = it.content
-                }
+                detailContentText.text = it.content
             }
         })
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
 }
