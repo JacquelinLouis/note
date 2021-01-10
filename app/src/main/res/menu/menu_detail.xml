@@ -3,6 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/action_pick_type"
+        android:title="@string/action_pick_type"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/action_pick_type_text"
+                android:title="@string/action_pick_type_text"/>
+            <item
+                android:id="@+id/action_pick_type_password"
+                android:title="@string/action_pick_type_password"/>
+        </menu>
+    </item>
+
+    <item
         android:id="@+id/action_save"
         android:title="@string/action_save"
         android:icon="@drawable/ic_save_black_24dp"

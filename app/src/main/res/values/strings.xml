@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">MyNote</string>
+    <string name="action_pick_type">Pick type</string>
+    <string name="action_pick_type_text">Text</string>
+    <string name="action_pick_type_password">Password</string>
     <string name="action_save">Save</string>
     <string name="action_info">Info</string>
     <string name="action_cancel">Cancel</string>

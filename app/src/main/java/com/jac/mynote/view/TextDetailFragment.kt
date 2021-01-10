@@ -21,6 +21,8 @@ class TextDetailFragment : Fragment() {
 
     private lateinit var detailContentText: TextView
 
+    private var detailType: Int = R.id.action_pick_type_text
+
     private val myNoteViewModel: MyNoteViewModel by activityViewModels()
 
     private val onBackPressedCallback = object:OnBackPressedCallback(true) {
@@ -29,11 +31,18 @@ class TextDetailFragment : Fragment() {
         }
     }
 
+    private fun setType(menuItem: MenuItem): Boolean {
+        detailType = menuItem.itemId
+        activity?.invalidateOptionsMenu()
+        return true
+    }
+
     private fun save(): Boolean {
         val note: Note = myNoteViewModel.getCurrentNote() ?: return false
 
         note.title = detailTitleText.text.toString()
         note.content = detailContentText.text.toString()
+        note.type = if (detailType == R.id.action_pick_type_password) Note.Type.PASSWORD else Note.Type.TEXT
 
         myNoteViewModel.setNote(note)
         myNoteViewModel.setCurrentNote(null)
@@ -52,6 +61,8 @@ class TextDetailFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.action_pick_type_text -> setType(item)
+            R.id.action_pick_type_password -> setType(item)
             R.id.action_save -> save()
             R.id.action_info -> true
             R.id.action_cancel -> cancel()
@@ -62,6 +73,10 @@ class TextDetailFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_detail, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.action_pick_type).title = menu.findItem(detailType).title
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +98,7 @@ class TextDetailFragment : Fragment() {
 
         detailTitleText = view.findViewById(R.id.detail_title_text)
         detailContentText = view.findViewById(R.id.detail_content_text)
+        detailType = R.id.action_pick_type_text
 
         myNoteViewModel.currentNote.observe(viewLifecycleOwner, Observer {
             if (it == null) {
@@ -90,6 +106,7 @@ class TextDetailFragment : Fragment() {
             } else {
                 detailTitleText.text = it.title
                 detailContentText.text = it.content
+                detailType = if (it.type == Note.Type.PASSWORD) R.id.action_pick_type_password else R.id.action_pick_type_text
             }
         })
     }
