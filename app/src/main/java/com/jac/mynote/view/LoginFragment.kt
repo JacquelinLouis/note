@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.jac.mynote.R
+import com.jac.mynote.security.Crypt
 
 class LoginFragment : Fragment() {
 
@@ -39,11 +40,12 @@ class LoginFragment : Fragment() {
         createAccountButton = view.findViewById(R.id.login_create_account_button)
 
         loginButton.setOnClickListener{
-            val passwordText = passwordTextView.text
+            val userPassword: String = passwordTextView.text.toString()
+            val userEncryptedPassword = Crypt.encrypt(userPassword)
+            val localEncryptedPassword = PreferenceManager.getDefaultSharedPreferences(activity)
+                .getString(PASSWORD_SHARED_PREFERENCE_KEY, "")
             // TODO: check password nullity, emptiness, etc after debug
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
-            val storedPassword = sharedPreferences.getString(PASSWORD_SHARED_PREFERENCE_KEY, "")
-            if (storedPassword?.equals(passwordText)!!) {
+            if (localEncryptedPassword?.equals(userEncryptedPassword)!!) {
                 findNavController().navigate(R.id.action_LoginFragment_to_ListFragment)
             }
         }
@@ -52,8 +54,8 @@ class LoginFragment : Fragment() {
             if (passwordTextView.text.isNotEmpty()) {
                 val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
                 val sharedPreferencesEditor = sharedPreferences.edit()
-                sharedPreferencesEditor.putString(PASSWORD_SHARED_PREFERENCE_KEY,
-                    passwordTextView.text.toString())
+                val encryptedPassword: String = Crypt.encrypt(passwordTextView.text.toString())
+                sharedPreferencesEditor.putString(PASSWORD_SHARED_PREFERENCE_KEY, encryptedPassword)
                 // TODO store the hash, not the password itself
                 sharedPreferencesEditor.apply()
             }
