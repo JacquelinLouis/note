@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">MyNote</string>
 
-    <string name="login_password">Password</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_login_hint">Login</string>
     <string name="login_login">Log in</string>
     <string name="login_create_account">Create account</string>
 

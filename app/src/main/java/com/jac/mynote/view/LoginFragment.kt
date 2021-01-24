@@ -19,6 +19,7 @@ class LoginFragment : Fragment() {
         val PASSWORD_SHARED_PREFERENCE_KEY = "PASSWORD_SHARED_PREFERENCE_KEY"
     }
 
+    private lateinit var loginTextView: TextView
     private lateinit var passwordTextView: TextView
     private lateinit var loginButton: Button
     private lateinit var createAccountButton: Button
@@ -35,28 +36,32 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loginTextView = view.findViewById(R.id.login_login_text_view)
         passwordTextView = view.findViewById(R.id.login_password_text_view)
         loginButton = view.findViewById(R.id.login_login_button)
         createAccountButton = view.findViewById(R.id.login_create_account_button)
 
         loginButton.setOnClickListener{
+            val userLogin:  String = loginTextView.text.toString()
             val userPassword: String = passwordTextView.text.toString()
-            val userEncryptedPassword = Crypt.encrypt(userPassword)
             val localEncryptedPassword = PreferenceManager.getDefaultSharedPreferences(activity)
                 .getString(PASSWORD_SHARED_PREFERENCE_KEY, "")
             // TODO: check password nullity, emptiness, etc after debug
-            if (localEncryptedPassword?.equals(userEncryptedPassword)!!) {
+            if (localEncryptedPassword != null
+                && Crypt.match(userLogin, userPassword, localEncryptedPassword)) {
                 findNavController().navigate(R.id.action_LoginFragment_to_ListFragment)
             }
         }
 
         createAccountButton.setOnClickListener {
             if (passwordTextView.text.isNotEmpty()) {
+                val userLogin:  String = loginTextView.text.toString()
+                val userPassword: String = passwordTextView.text.toString()
                 val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
                 val sharedPreferencesEditor = sharedPreferences.edit()
-                val encryptedPassword: String = Crypt.encrypt(passwordTextView.text.toString())
+                val encryptedPassword: String? = Crypt.encrypt(userLogin, userPassword)
+                // TODO: notify of an error if result is null.
                 sharedPreferencesEditor.putString(PASSWORD_SHARED_PREFERENCE_KEY, encryptedPassword)
-                // TODO store the hash, not the password itself
                 sharedPreferencesEditor.apply()
             }
         }
