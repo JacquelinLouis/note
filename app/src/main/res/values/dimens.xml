@@ -1,9 +1,11 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="login_app_name_size">48sp</dimen>
+    <dimen name="login_app_name_margin">96sp</dimen>
     <dimen name="login_password_size">32sp</dimen>
     <dimen name="login_login_size">32sp</dimen>
     <dimen name="login_login_margin">20sp</dimen>
+    <dimen name="login_error_text_view_size">20sp</dimen>
     <dimen name="login_create_account_size">20sp</dimen>
     <dimen name="login_create_account_margin">20sp</dimen>
     <dimen name="detail_title_size">40dp</dimen>

@@ -4,6 +4,8 @@
     <string name="login_password_hint">Password</string>
     <string name="login_login_hint">Login</string>
     <string name="login_login">Log in</string>
+    <string name="login_error_creating_account">Unable to create account</string>
+    <string name="login_error_login_in">Invalid login or password</string>
     <string name="login_create_account">Create account</string>
 
     <string name="action_pick_type">Pick type</string>
