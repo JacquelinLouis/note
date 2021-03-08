@@ -2,6 +2,7 @@ package com.jac.mynote.viewmodel
 
 import com.jac.mynote.data.NoteEntity
 import com.jac.mynote.model.Note
+import com.jac.mynote.security.DeCrypt
 
 /** Adapter class to convert {@link NoteEntity} to {@link Note} and back. */
 class NoteAdapter {
@@ -16,7 +17,11 @@ class NoteAdapter {
          * @return the view note corresponding to model one.
          */
         fun fromModelToView(modelNote: NoteEntity): Note {
-            return Note(modelNote.uid, modelNote.title, modelNote.content, fromTypeModelToView(modelNote.type))
+            return Note(
+                modelNote.uid,
+                DeCrypt.decrypt(modelNote.title),
+                DeCrypt.decrypt(modelNote.content),
+                fromTypeModelToView(modelNote.type))
         }
 
         /**
@@ -41,7 +46,9 @@ class NoteAdapter {
          * @return the model note corresponding to view one.
          */
         fun fromViewToModel(viewNote: Note): NoteEntity {
-            return NoteEntity(viewNote.title, fromTypeViewToModel(viewNote.type), viewNote.content);
+            return NoteEntity(DeCrypt.encrypt(viewNote.title),
+                fromTypeViewToModel(viewNote.type),
+                DeCrypt.encrypt(viewNote.content))
         }
 
         /**

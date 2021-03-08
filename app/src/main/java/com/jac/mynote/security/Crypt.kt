@@ -7,7 +7,7 @@ import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
 /**
- * Security helper to crypt or read a message.
+ * Security helper to crypt a message.
  * See https://developer.android.com/guide/topics/security/cryptography for details about
  * cryptography.
  */
