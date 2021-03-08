@@ -1,13 +1,13 @@
-package com.jac.mynote.viewmodel
+package com.jac.note.viewmodel
 
 import android.app.Application
 import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.*
-import com.jac.mynote.data.MyNoteDatabase
-import com.jac.mynote.data.NoteEntity
-import com.jac.mynote.json.Notes
-import com.jac.mynote.model.Note
+import com.jac.note.data.MyNoteDatabase
+import com.jac.note.data.NoteEntity
+import com.jac.note.json.Notes
+import com.jac.note.model.Note
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileInputStream

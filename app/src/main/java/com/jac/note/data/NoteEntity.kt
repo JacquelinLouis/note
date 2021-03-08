@@ -1,10 +1,10 @@
-package com.jac.mynote.data
+package com.jac.note.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.jac.mynote.data.converter.NoteTypeConverter
+import com.jac.note.data.converter.NoteTypeConverter
 
 /** Note entity representing a unique note in database. */
 @Entity()

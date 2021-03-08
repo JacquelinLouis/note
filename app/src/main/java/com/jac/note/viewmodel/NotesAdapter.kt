@@ -1,7 +1,7 @@
-package com.jac.mynote.viewmodel
+package com.jac.note.viewmodel
 
-import com.jac.mynote.model.Note
-import com.jac.mynote.data.NoteEntity
+import com.jac.note.model.Note
+import com.jac.note.data.NoteEntity
 
 /** Adapter class to convert {@link NoteEntity} to {@link Note} and back. */
 class NotesAdapter {

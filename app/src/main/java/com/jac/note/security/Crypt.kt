@@ -1,4 +1,4 @@
-package com.jac.mynote.security
+package com.jac.note.security
 
 import java.security.NoSuchAlgorithmException
 import java.security.spec.KeySpec

@@ -1,8 +1,8 @@
-package com.jac.mynote.data
+package com.jac.note.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.jac.mynote.data.NoteEntity
+import com.jac.note.data.NoteEntity
 
 /** Notes data object, used to get, add, update or delete notes. */
 @Dao

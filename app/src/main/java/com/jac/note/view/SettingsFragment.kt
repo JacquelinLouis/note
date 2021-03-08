@@ -1,4 +1,4 @@
-package com.jac.mynote.view
+package com.jac.note.view
 
 import android.app.Activity
 import android.content.Intent
@@ -6,8 +6,8 @@ import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.jac.mynote.R
-import com.jac.mynote.viewmodel.MyNoteViewModel
+import com.jac.note.R
+import com.jac.note.viewmodel.MyNoteViewModel
 
 class SettingsFragment : PreferenceFragmentCompat() {
 

@@ -8,7 +8,7 @@
     <!-- Login fragment, launched on application start. -->
     <fragment
         android:id="@+id/LoginFragment"
-        android:name="com.jac.mynote.view.LoginFragment"
+        android:name="com.jac.note.view.LoginFragment"
         android:label="@string/login_fragment_label"
         tools:layout="@layout/fragment_login">
 
@@ -20,7 +20,7 @@
     <!-- List fragment, launched after login in the application. -->
     <fragment
         android:id="@+id/ListFragment"
-        android:name="com.jac.mynote.view.ListFragment"
+        android:name="com.jac.note.view.ListFragment"
         android:label="@string/list_fragment_label"
         tools:layout="@layout/fragment_list">
 
@@ -41,7 +41,7 @@
     <!-- Text detail fragment, launched when an item is selected/created in list. -->
     <fragment
         android:id="@+id/TextDetailFragment"
-        android:name="com.jac.mynote.view.TextDetailFragment"
+        android:name="com.jac.note.view.TextDetailFragment"
         android:label="@string/text_detail_fragment_label"
         tools:layout="@layout/fragment_detail">
 
@@ -52,7 +52,7 @@
 
     <fragment
         android:id="@+id/SettingsFragment"
-        android:name="com.jac.mynote.view.SettingsFragment"
+        android:name="com.jac.note.view.SettingsFragment"
         android:label="@string/settings_fragment_label">
 
         <action

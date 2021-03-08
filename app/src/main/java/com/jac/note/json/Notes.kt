@@ -1,8 +1,8 @@
-package com.jac.mynote.json
+package com.jac.note.json
 
 import android.util.JsonReader
 import android.util.JsonWriter
-import com.jac.mynote.data.NoteEntity
+import com.jac.note.data.NoteEntity
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.OutputStream

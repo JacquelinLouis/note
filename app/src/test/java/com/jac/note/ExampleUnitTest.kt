@@ -1,4 +1,4 @@
-package com.jac.mynote
+package com.jac.note
 
 import org.junit.Test
 

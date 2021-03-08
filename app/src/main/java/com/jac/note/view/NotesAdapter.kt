@@ -1,12 +1,12 @@
-package com.jac.mynote.view
+package com.jac.note.view
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.jac.mynote.R
-import com.jac.mynote.model.Note
+import com.jac.note.R
+import com.jac.note.model.Note
 
 class NotesAdapter(private val notes: List<Note>,
                    private val clickListener: (position: Int) -> Unit,

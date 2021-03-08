@@ -1,4 +1,4 @@
-package com.jac.mynote.view
+package com.jac.note.view
 
 import android.os.Bundle
 import android.view.*
@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.jac.mynote.R
-import com.jac.mynote.model.Note
-import com.jac.mynote.viewmodel.MyNoteViewModel
+import com.jac.note.R
+import com.jac.note.model.Note
+import com.jac.note.viewmodel.MyNoteViewModel
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.

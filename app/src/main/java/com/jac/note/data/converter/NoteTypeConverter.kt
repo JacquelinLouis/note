@@ -1,7 +1,7 @@
-package com.jac.mynote.data.converter
+package com.jac.note.data.converter
 
 import androidx.room.TypeConverter
-import com.jac.mynote.data.NoteEntity
+import com.jac.note.data.NoteEntity
 
 class NoteTypeConverter {
     @TypeConverter

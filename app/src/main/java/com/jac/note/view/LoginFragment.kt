@@ -1,4 +1,4 @@
-package com.jac.mynote.view
+package com.jac.note.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
-import com.jac.mynote.R
-import com.jac.mynote.security.Crypt
+import com.jac.note.R
+import com.jac.note.security.Crypt
 
 class LoginFragment : Fragment() {
 

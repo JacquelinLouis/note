@@ -1,4 +1,4 @@
-package com.jac.mynote.model
+package com.jac.note.model
 
 class Note constructor(var id: Int, var title: String, var content: String, var type: Int) {
     companion object {

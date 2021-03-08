@@ -1,4 +1,4 @@
-package com.jac.mynote.view
+package com.jac.note.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,9 +14,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.jac.mynote.R
-import com.jac.mynote.model.Note
-import com.jac.mynote.viewmodel.MyNoteViewModel
+import com.jac.note.R
+import com.jac.note.model.Note
+import com.jac.note.viewmodel.MyNoteViewModel
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
