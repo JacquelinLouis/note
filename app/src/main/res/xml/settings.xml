@@ -12,6 +12,12 @@
         app:title="Import"
         app:summary="Import database content from a file" />
 
+    <!-- Enable/disable login to access to notes -->
+    <SwitchPreference
+        app:key="login"
+        app:title="Login"
+        app:summary="Enable/disable login to access to notes" />
+
     <!-- Drop database content -->
     <Preference
         app:key="delete_all"

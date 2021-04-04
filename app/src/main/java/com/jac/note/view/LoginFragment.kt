@@ -30,6 +30,11 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
+        if (!sharedPreferences.getBoolean(SettingsFragment.LOGIN_SHARED_PREFERENCE_KEY, false)) {
+            findNavController().navigate(R.id.action_LoginFragment_to_ListFragment)
+            return null
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false)
     }

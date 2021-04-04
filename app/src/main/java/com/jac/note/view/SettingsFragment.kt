@@ -6,12 +6,15 @@ import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
+import androidx.preference.SwitchPreference
 import com.jac.note.R
 import com.jac.note.viewmodel.MyNoteViewModel
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
     companion object {
+        public const val LOGIN_SHARED_PREFERENCE_KEY = "LOGIN_SHARED_PREFERENCE_KEY"
         private const val INTENT_SELECT_INPUT_FILE_REQUEST_CODE = 0
         private const val INTENT_SELECT_OUTPUT_FOLDER_REQUEST_CODE = 1
     }
@@ -36,6 +39,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 type = "application/octet-stream"
             }
             startActivityForResult(intent, INTENT_SELECT_INPUT_FILE_REQUEST_CODE)
+            true
+        }
+
+    private val loginPreferenceListener: Preference.OnPreferenceChangeListener =
+        Preference.OnPreferenceChangeListener {_, value ->
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
+            val sharedPreferencesEditor = sharedPreferences.edit()
+            sharedPreferencesEditor.putBoolean(LOGIN_SHARED_PREFERENCE_KEY, value as Boolean)
+            sharedPreferencesEditor.apply()
             true
         }
 
@@ -69,6 +81,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         super.onStart()
         findPreference<Preference>("export")?.onPreferenceClickListener = exportPreferenceListener
         findPreference<Preference>("import")?.onPreferenceClickListener = importPreferenceListener
+        findPreference<SwitchPreference>("login")?.onPreferenceChangeListener = loginPreferenceListener
         findPreference<Preference>("delete_all")?.onPreferenceClickListener = deleteAllPreferenceListener
     }
 
@@ -76,6 +89,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         super.onPause()
         findPreference<Preference>("export")?.onPreferenceClickListener = null
         findPreference<Preference>("import")?.onPreferenceClickListener = null
+        findPreference<SwitchPreference>("login")?.onPreferenceChangeListener = null
         findPreference<Preference>("delete_all")?.onPreferenceClickListener = null
     }
 }
