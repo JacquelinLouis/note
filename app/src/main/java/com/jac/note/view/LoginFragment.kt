@@ -15,8 +15,8 @@ import com.jac.note.security.Crypt
 
 class LoginFragment : Fragment() {
 
-    private companion object {
-        val PASSWORD_SHARED_PREFERENCE_KEY = "PASSWORD_SHARED_PREFERENCE_KEY"
+    companion object {
+        const val PASSWORD_SHARED_PREFERENCE_KEY = "PASSWORD_SHARED_PREFERENCE_KEY"
     }
 
     private lateinit var loginTextView: TextView
@@ -68,20 +68,7 @@ class LoginFragment : Fragment() {
         }
 
         createAccountButton.setOnClickListener {
-            if (passwordTextView.text.isNotEmpty()) {
-                val userLogin:  String = loginTextView.text.toString()
-                val userPassword: String = passwordTextView.text.toString()
-                val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
-                val sharedPreferencesEditor = sharedPreferences.edit()
-                val encryptedPassword: String? = Crypt.encrypt(userLogin, userPassword)
-                if (encryptedPassword == null) {
-                    setError(R.string.login_error_creating_account)
-                    return@setOnClickListener
-                }
-                setError(null)
-                sharedPreferencesEditor.putString(PASSWORD_SHARED_PREFERENCE_KEY, encryptedPassword)
-                sharedPreferencesEditor.apply()
-            }
+            findNavController().navigate(R.id.action_LoginFragment_to_CreateAccountFragment)
         }
     }
 

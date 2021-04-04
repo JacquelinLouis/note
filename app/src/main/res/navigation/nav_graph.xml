@@ -15,6 +15,24 @@
         <action
             android:id="@+id/action_LoginFragment_to_ListFragment"
             app:destination="@id/ListFragment" />
+
+        <action
+            android:id="@+id/action_LoginFragment_to_CreateAccountFragment"
+            app:destination="@id/CreateAccountFragment" />
+
+    </fragment>
+
+    <!-- Create account fragment, launched after login in the application -->
+    <fragment
+        android:id="@+id/CreateAccountFragment"
+        android:name="com.jac.note.view.CreateAccountFragment"
+        android:label="@string/create_account_fragment_label"
+        tools:layout="@layout/fragment_create_account">
+
+        <action
+            android:id="@+id/action_CreateAccountFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
+
     </fragment>
 
     <!-- List fragment, launched after login in the application. -->
