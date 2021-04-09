@@ -74,8 +74,12 @@
         android:label="@string/settings_fragment_label">
 
         <action
-            android:id="@+id/action_SettingsFrament_to_ListFragment"
-            app:destination="@+id/ListFragment" />
+            android:id="@+id/action_SettingsFragment_to_ListFragment"
+            app:destination="@id/ListFragment" />
+
+        <action
+            android:id="@+id/action_SettingsFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
 
     </fragment>
 </navigation>

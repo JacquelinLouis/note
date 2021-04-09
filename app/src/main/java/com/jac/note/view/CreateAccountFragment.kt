@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.preference.PreferenceManager
 import com.jac.note.R
-import com.jac.note.security.Crypt
+import com.jac.note.viewmodel.MyNoteViewModel
 
 class CreateAccountFragment: Fragment() {
+
+    private val myNoteViewModel: MyNoteViewModel by activityViewModels()
 
     private lateinit var loginTextView: TextView
     private lateinit var passwordTextView: TextView
@@ -55,15 +57,10 @@ class CreateAccountFragment: Fragment() {
                 R.string.create_account_invalid_password))
             return
 
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
-        val sharedPreferencesEditor = sharedPreferences.edit()
-        val encryptedPassword: String? = Crypt.encrypt(userLogin, userPassword)
-
-        if (setErrorIf(encryptedPassword == null, R.string.create_account_error)) return
+        if (setErrorIf(!myNoteViewModel.createAccount(userLogin, userPassword),
+                R.string.create_account_error)) return
 
         setError(null)
-        sharedPreferencesEditor.putString(LoginFragment.PASSWORD_SHARED_PREFERENCE_KEY, encryptedPassword)
-        sharedPreferencesEditor.apply()
         findNavController().navigate(R.id.action_CreateAccountFragment_to_LoginFragment)
     }
 

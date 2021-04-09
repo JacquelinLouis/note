@@ -2,22 +2,33 @@ package com.jac.note.viewmodel
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.Uri
 import androidx.lifecycle.*
+import androidx.preference.PreferenceManager
 import com.jac.note.data.MyNoteDatabase
 import com.jac.note.data.NoteEntity
 import com.jac.note.json.Notes
 import com.jac.note.model.Note
+import com.jac.note.security.Crypt
 import kotlinx.coroutines.launch
-import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
 /** View-model entry point, store view-related data and update database accordingly. */
 class MyNoteViewModel(application: Application) : AndroidViewModel(application) {
 
+    companion object {
+        private const val PASSWORD_SHARED_PREFERENCE_KEY = "PASSWORD_SHARED_PREFERENCE_KEY"
+        private const val LOGIN_SHARED_PREFERENCE_KEY = "LOGIN_SHARED_PREFERENCE_KEY"
+    }
+
     /** Database storing application's data. */
     private var myNoteDatabase: MyNoteDatabase = MyNoteDatabase.getInstance(application)
+
+    /** Application's shared preferences. */
+    private val sharedPreferences: SharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(getApplication())
 
     /** Live data of items list view. */
     var notes : LiveData<List<Note>>
@@ -150,5 +161,55 @@ class MyNoteViewModel(application: Application) : AndroidViewModel(application) 
             noteEntities.forEach{ myNoteDatabase.getNotesDao().insertNoteEntities(it) }
         }
         fileInputStream.close()
+    }
+
+    /**
+     * Create a new account for the given pair of login/password.
+     * @param login user's login.
+     * @param password user's password.
+     * @return true if the account has been created successfully, false else.
+     */
+    fun createAccount(login: String, password: String): Boolean {
+        val sharedPreferencesEditor = sharedPreferences.edit()
+        Crypt.encrypt(login, password)?.let {
+            sharedPreferencesEditor.putString(PASSWORD_SHARED_PREFERENCE_KEY, it)
+            sharedPreferencesEditor.apply()
+            return true
+        }
+        return false
+    }
+
+    /**
+     * Check if given pair of login and password match saved ones.
+     * @param login login to check.
+     * @param password password to check.
+     * @return true if given pair of login/password match saved ones, false else.
+     */
+    fun matchAccount(login: String, password: String): Boolean {
+        val localEncryptedPassword =
+            sharedPreferences.getString(PASSWORD_SHARED_PREFERENCE_KEY, "")
+        // TODO: check password nullity, emptiness, etc after debug
+        return localEncryptedPassword != null
+                && !Crypt.match(login, password, localEncryptedPassword)
+    }
+
+    /**
+     * Check is login-in is enable and required to access to application's data.
+     * @return true if login is enable, false else.
+     */
+    fun isLoginEnable(): Boolean {
+        return sharedPreferences.getBoolean(LOGIN_SHARED_PREFERENCE_KEY, false)
+    }
+
+    /**
+     * Enable/disable login-in requirement to access to application's data.
+     * @param newValue the new value to set.
+     * @return the new value set.
+     */
+    fun enableLogin(newValue: Boolean): Boolean {
+        val sharedPreferencesEditor = sharedPreferences.edit()
+        sharedPreferencesEditor.putBoolean(LOGIN_SHARED_PREFERENCE_KEY, newValue)
+        sharedPreferencesEditor.apply()
+        return newValue
     }
 }

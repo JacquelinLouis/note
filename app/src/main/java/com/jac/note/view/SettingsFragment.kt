@@ -4,9 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreference
 import com.jac.note.R
 import com.jac.note.viewmodel.MyNoteViewModel
@@ -14,7 +14,6 @@ import com.jac.note.viewmodel.MyNoteViewModel
 class SettingsFragment : PreferenceFragmentCompat() {
 
     companion object {
-        public const val LOGIN_SHARED_PREFERENCE_KEY = "LOGIN_SHARED_PREFERENCE_KEY"
         private const val INTENT_SELECT_INPUT_FILE_REQUEST_CODE = 0
         private const val INTENT_SELECT_OUTPUT_FOLDER_REQUEST_CODE = 1
     }
@@ -44,10 +43,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private val loginPreferenceListener: Preference.OnPreferenceChangeListener =
         Preference.OnPreferenceChangeListener {_, value ->
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
-            val sharedPreferencesEditor = sharedPreferences.edit()
-            sharedPreferencesEditor.putBoolean(LOGIN_SHARED_PREFERENCE_KEY, value as Boolean)
-            sharedPreferencesEditor.apply()
+            if (myNoteViewModel.enableLogin(value as Boolean)) {
+                findNavController().navigate(R.id.action_SettingsFragment_to_LoginFragment)
+            }
             true
         }
 
@@ -81,7 +79,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
         super.onStart()
         findPreference<Preference>("export")?.onPreferenceClickListener = exportPreferenceListener
         findPreference<Preference>("import")?.onPreferenceClickListener = importPreferenceListener
-        findPreference<SwitchPreference>("login")?.onPreferenceChangeListener = loginPreferenceListener
+        val loginSwitchPreference = findPreference<SwitchPreference>("login")
+        loginSwitchPreference?.apply {
+            isChecked = myNoteViewModel.isLoginEnable()
+            onPreferenceChangeListener = loginPreferenceListener
+        }
         findPreference<Preference>("delete_all")?.onPreferenceClickListener = deleteAllPreferenceListener
     }
 

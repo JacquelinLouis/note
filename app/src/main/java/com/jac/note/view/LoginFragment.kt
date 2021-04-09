@@ -8,16 +8,14 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.preference.PreferenceManager
 import com.jac.note.R
-import com.jac.note.security.Crypt
+import com.jac.note.viewmodel.MyNoteViewModel
 
 class LoginFragment : Fragment() {
 
-    companion object {
-        const val PASSWORD_SHARED_PREFERENCE_KEY = "PASSWORD_SHARED_PREFERENCE_KEY"
-    }
+    private val myNoteViewModel: MyNoteViewModel by activityViewModels()
 
     private lateinit var loginTextView: TextView
     private lateinit var passwordTextView: TextView
@@ -30,8 +28,7 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
-        if (!sharedPreferences.getBoolean(SettingsFragment.LOGIN_SHARED_PREFERENCE_KEY, false)) {
+        if (!myNoteViewModel.isLoginEnable()) {
             findNavController().navigate(R.id.action_LoginFragment_to_ListFragment)
             return null
         }
@@ -60,11 +57,7 @@ class LoginFragment : Fragment() {
         loginButton.setOnClickListener{
             val userLogin:  String = loginTextView.text.toString()
             val userPassword: String = passwordTextView.text.toString()
-            val localEncryptedPassword = PreferenceManager.getDefaultSharedPreferences(activity)
-                .getString(PASSWORD_SHARED_PREFERENCE_KEY, "")
-            // TODO: check password nullity, emptiness, etc after debug
-            if (localEncryptedPassword == null
-                || !Crypt.match(userLogin, userPassword, localEncryptedPassword)) {
+            if (!myNoteViewModel.matchAccount(userLogin, userPassword)) {
                 setError(R.string.login_error_login_in)
                 return@setOnClickListener
             }
