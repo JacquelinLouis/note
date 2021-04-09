@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -54,10 +55,13 @@ class LoginFragment : Fragment() {
         errorTextView = view.findViewById(R.id.login_error_text_view)
         createAccountButton = view.findViewById(R.id.login_create_account_button)
 
+        myNoteViewModel.getLogin()?.let {
+            loginTextView.inputType = EditorInfo.TYPE_NULL
+            loginTextView.text = it
+        }
         loginButton.setOnClickListener{
-            val userLogin:  String = loginTextView.text.toString()
             val userPassword: String = passwordTextView.text.toString()
-            if (!myNoteViewModel.matchAccount(userLogin, userPassword)) {
+            if (!myNoteViewModel.matchAccount(userPassword)) {
                 setError(R.string.login_error_login_in)
                 return@setOnClickListener
             }

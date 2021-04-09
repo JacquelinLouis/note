@@ -19,8 +19,9 @@ import java.io.FileOutputStream
 class MyNoteViewModel(application: Application) : AndroidViewModel(application) {
 
     companion object {
-        private const val PASSWORD_SHARED_PREFERENCE_KEY = "PASSWORD_SHARED_PREFERENCE_KEY"
         private const val LOGIN_SHARED_PREFERENCE_KEY = "LOGIN_SHARED_PREFERENCE_KEY"
+        private const val PASSWORD_SHARED_PREFERENCE_KEY = "PASSWORD_SHARED_PREFERENCE_KEY"
+        private const val LOGIN_IN_SHARED_PREFERENCE_KEY = "LOGIN_IN_SHARED_PREFERENCE_KEY"
     }
 
     /** Database storing application's data. */
@@ -172,6 +173,7 @@ class MyNoteViewModel(application: Application) : AndroidViewModel(application) 
     fun createAccount(login: String, password: String): Boolean {
         val sharedPreferencesEditor = sharedPreferences.edit()
         Crypt.encrypt(login, password)?.let {
+            sharedPreferencesEditor.putString(LOGIN_SHARED_PREFERENCE_KEY, login)
             sharedPreferencesEditor.putString(PASSWORD_SHARED_PREFERENCE_KEY, it)
             sharedPreferencesEditor.apply()
             return true
@@ -180,16 +182,24 @@ class MyNoteViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     /**
+     * Get user's login.
+     * @return user's login, or null if no account has been created yet.
+     */
+    fun getLogin(): String? {
+        return sharedPreferences.getString(LOGIN_SHARED_PREFERENCE_KEY, null)
+    }
+
+    /**
      * Check if given pair of login and password match saved ones.
-     * @param login login to check.
      * @param password password to check.
      * @return true if given pair of login/password match saved ones, false else.
      */
-    fun matchAccount(login: String, password: String): Boolean {
+    fun matchAccount(password: String): Boolean {
+        val login = sharedPreferences.getString(LOGIN_SHARED_PREFERENCE_KEY, null)
         val localEncryptedPassword =
-            sharedPreferences.getString(PASSWORD_SHARED_PREFERENCE_KEY, "")
+            sharedPreferences.getString(PASSWORD_SHARED_PREFERENCE_KEY, null)
         // TODO: check password nullity, emptiness, etc after debug
-        return localEncryptedPassword != null
+        return login != null && localEncryptedPassword != null
                 && !Crypt.match(login, password, localEncryptedPassword)
     }
 
@@ -198,7 +208,7 @@ class MyNoteViewModel(application: Application) : AndroidViewModel(application) 
      * @return true if login is enable, false else.
      */
     fun isLoginEnable(): Boolean {
-        return sharedPreferences.getBoolean(LOGIN_SHARED_PREFERENCE_KEY, false)
+        return sharedPreferences.getBoolean(LOGIN_IN_SHARED_PREFERENCE_KEY, false)
     }
 
     /**
@@ -208,7 +218,7 @@ class MyNoteViewModel(application: Application) : AndroidViewModel(application) 
      */
     fun enableLogin(newValue: Boolean): Boolean {
         val sharedPreferencesEditor = sharedPreferences.edit()
-        sharedPreferencesEditor.putBoolean(LOGIN_SHARED_PREFERENCE_KEY, newValue)
+        sharedPreferencesEditor.putBoolean(LOGIN_IN_SHARED_PREFERENCE_KEY, newValue)
         sharedPreferencesEditor.apply()
         return newValue
     }
