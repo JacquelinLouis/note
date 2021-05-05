@@ -38,7 +38,7 @@
     <!-- List fragment, launched after login in the application. -->
     <fragment
         android:id="@+id/ListFragment"
-        android:name="com.jac.note.view.ListFragment"
+        android:name="com.jac.note.view.NotesListFragment"
         android:label="@string/list_fragment_label"
         tools:layout="@layout/fragment_list">
 

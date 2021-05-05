@@ -21,7 +21,7 @@ import com.jac.note.viewmodel.MyNoteViewModel
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class ListFragment : Fragment() {
+class NotesListFragment : Fragment() {
 
     private val myNoteViewModel: MyNoteViewModel by activityViewModels()
     private val onNoteClickListener: (Int) -> Unit = {

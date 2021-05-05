@@ -5,8 +5,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import com.jac.note.view.ListFragment
 
 /** Application entry point, activity started on application start. */
 class MainActivity : AppCompatActivity() {
