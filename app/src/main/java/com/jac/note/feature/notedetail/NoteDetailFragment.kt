@@ -15,7 +15,7 @@ import com.jac.note.viewmodel.MyNoteViewModel
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class TextDetailFragment : Fragment() {
+class NoteDetailFragment : Fragment() {
 
     private lateinit var detailTitleText: TextView
 

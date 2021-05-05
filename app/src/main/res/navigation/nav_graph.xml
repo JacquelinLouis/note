@@ -59,7 +59,7 @@
     <!-- Text detail fragment, launched when an item is selected/created in list. -->
     <fragment
         android:id="@+id/TextDetailFragment"
-        android:name="com.jac.note.feature.notedetail.TextDetailFragment"
+        android:name="com.jac.note.feature.notedetail.NoteDetailFragment"
         android:label="@string/text_detail_fragment_label"
         tools:layout="@layout/fragment_detail">
 
