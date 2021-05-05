@@ -8,7 +8,7 @@ import androidx.lifecycle.*
 import androidx.preference.PreferenceManager
 import com.jac.note.data.MyNoteDatabase
 import com.jac.note.data.NoteEntity
-import com.jac.note.json.Notes
+import com.jac.note.json.JsonNotes
 import com.jac.note.model.Note
 import com.jac.note.security.Crypt
 import kotlinx.coroutines.launch
@@ -143,7 +143,7 @@ class MyNoteViewModel(application: Application) : AndroidViewModel(application) 
             val parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, "w")
             val fileDescriptor = parcelFileDescriptor?.fileDescriptor
             val fileOutputStream = FileOutputStream(fileDescriptor)
-            Notes.serialize(NotesAdapter.fromViewToModel(notes), fileOutputStream)
+            JsonNotes.serialize(NotesAdapter.fromViewToModel(notes), fileOutputStream)
             fileOutputStream.close()
         }
     }
@@ -157,7 +157,7 @@ class MyNoteViewModel(application: Application) : AndroidViewModel(application) 
         val parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, "r")
         val fileDescriptor = parcelFileDescriptor?.fileDescriptor
         val fileInputStream = FileInputStream(fileDescriptor)
-        val noteEntities = Notes.deserialize(fileInputStream)
+        val noteEntities = JsonNotes.deserialize(fileInputStream)
         viewModelScope.launch {
             noteEntities.forEach{ myNoteDatabase.getNotesDao().insertNoteEntities(it) }
         }

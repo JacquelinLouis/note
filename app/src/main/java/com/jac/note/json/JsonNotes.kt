@@ -9,8 +9,8 @@ import java.io.OutputStream
 import java.io.OutputStreamWriter
 
 
-/** Serialize multiple {@link NoteEntity objects} as JSON. */
-class Notes {
+/** Serialize multiple [NoteEntity] from/to JSON from/to file. */
+class JsonNotes {
 
     companion object {
 
@@ -21,15 +21,15 @@ class Notes {
          */
         fun serialize(noteEntities: List<NoteEntity>, out: OutputStream) {
             val moshi = Moshi.Builder().build()
-            val jsonAdapter = moshi.adapter<List<Note>>(Types.newParameterizedType(List::class.java, Note::class.java))
-            val jsonNoteEntities = jsonAdapter.toJson(noteEntities.map { noteEntity -> Note(noteEntity) })
+            val jsonAdapter = moshi.adapter<List<JsonNote>>(Types.newParameterizedType(List::class.java, JsonNote::class.java))
+            val jsonNoteEntities = jsonAdapter.toJson(noteEntities.map { noteEntity -> JsonNote(noteEntity) })
             OutputStreamWriter(out).use { writer -> writer.write(jsonNoteEntities) }
         }
 
         fun deserialize(inputStream: InputStream) : List<NoteEntity> {
             val noteEntities: List<NoteEntity>
             val moshi = Moshi.Builder().build()
-            val jsonAdapter = moshi.adapter<List<Note>>(Types.newParameterizedType(List::class.java, Note::class.java))
+            val jsonAdapter = moshi.adapter<List<JsonNote>>(Types.newParameterizedType(List::class.java, JsonNote::class.java))
             InputStreamReader(inputStream).use { reader ->
                 noteEntities = jsonAdapter.fromJson(reader.readText())?.map { note -> note.toNoteEntity() } ?: listOf()
             }

@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 
 /** Moshi version of [NoteEntity] for JSON serialization. */
 @JsonClass(generateAdapter = true)
-data class Note(val uid: Int, val title: String, val type: String, val content: String) {
+data class JsonNote(val uid: Int, val title: String, val type: String, val content: String) {
     /**
      * Constructor from [NoteEntity] instance.
      * @param noteEntity the note instance.
