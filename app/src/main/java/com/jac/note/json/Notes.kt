@@ -1,24 +1,16 @@
 package com.jac.note.json
 
-import android.util.JsonReader
-import android.util.JsonWriter
 import com.jac.note.data.NoteEntity
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.OutputStream
 import java.io.OutputStreamWriter
 
+
 /** Serialize multiple {@link NoteEntity objects} as JSON. */
 class Notes {
-
-    /** Key values for {@link NoteEntity} instances. */
-    interface Key {
-        companion object {
-
-            /** Notes key. */
-            val NOTES = "NOTES"
-        }
-    }
 
     companion object {
 
@@ -28,22 +20,19 @@ class Notes {
          * @param out the output stream to send the result to.
          */
         fun serialize(noteEntities: List<NoteEntity>, out: OutputStream) {
-            val writer = JsonWriter(OutputStreamWriter(out))
-            writer.beginArray()
-            noteEntities.forEach{ noteEntity -> Note.serialize(noteEntity, writer) }
-            writer.endArray()
-            writer.close()
+            val moshi = Moshi.Builder().build()
+            val jsonAdapter = moshi.adapter<List<Note>>(Types.newParameterizedType(List::class.java, Note::class.java))
+            val jsonNoteEntities = jsonAdapter.toJson(noteEntities.map { noteEntity -> Note(noteEntity) })
+            OutputStreamWriter(out).use { writer -> writer.write(jsonNoteEntities) }
         }
 
         fun deserialize(inputStream: InputStream) : List<NoteEntity> {
-            val noteEntities = ArrayList<NoteEntity>()
-            val reader = JsonReader(InputStreamReader(inputStream))
-            reader.beginArray()
-            while (reader.hasNext()) {
-                Note.deserialize(reader)?.let { noteEntities.add(it) }
+            val noteEntities: List<NoteEntity>
+            val moshi = Moshi.Builder().build()
+            val jsonAdapter = moshi.adapter<List<Note>>(Types.newParameterizedType(List::class.java, Note::class.java))
+            InputStreamReader(inputStream).use { reader ->
+                noteEntities = jsonAdapter.fromJson(reader.readText())?.map { note -> note.toNoteEntity() } ?: listOf()
             }
-            reader.endArray()
-            reader.close()
             return noteEntities
         }
     }
