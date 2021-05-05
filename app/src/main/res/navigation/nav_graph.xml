@@ -25,7 +25,7 @@
     <!-- Create account fragment, launched after login in the application -->
     <fragment
         android:id="@+id/CreateAccountFragment"
-        android:name="com.jac.note.view.CreateAccountFragment"
+        android:name="com.jac.note.feature.accountcreation.CreateAccountFragment"
         android:label="@string/create_account_fragment_label"
         tools:layout="@layout/fragment_create_account">
 
