@@ -1,4 +1,4 @@
-package com.jac.note.view
+package com.jac.note.feature.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
