@@ -1,4 +1,4 @@
-package com.jac.note.view
+package com.jac.note.feature.settings
 
 import android.app.Activity
 import android.content.Intent

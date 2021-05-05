@@ -70,7 +70,7 @@
 
     <fragment
         android:id="@+id/SettingsFragment"
-        android:name="com.jac.note.view.SettingsFragment"
+        android:name="com.jac.note.feature.settings.SettingsFragment"
         android:label="@string/settings_fragment_label">
 
         <action
